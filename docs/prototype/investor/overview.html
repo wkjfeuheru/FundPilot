@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121f37">
+  <title>资产总览 · FundPilot 用户端</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="investor" data-mode="investor" data-page="overview">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">PERSONAL WEALTH DASHBOARD</div>
+          <h1>晚上好，陈女士 👋</h1>
+          <p>您的资产配置整体平稳，AI 已完成最新一次组合健康检查。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-outline" type="button" data-toast="资产报告预览已生成（静态原型未连接导出服务），导出动作已写入审计留痕">
+            <span data-icon="download"></span>导出资产报告
+          </button>
+        </div>
+      </div>
+
+      <div class="ai-hero">
+        <div class="hero-content">
+          <div class="hero-kicker"><span data-icon="sparkles" data-icon-size="16"></span> AI WEALTH COPILOT · 本周分析</div>
+          <h2>让每一笔投资，都有清晰的依据</h2>
+          <p>投顾已推送 1 份调仓建议：降低单只债券基金集中度，提升宽基指数与黄金分散度。由你核对后决定是否跟调。</p>
+          <div class="hero-cta">
+            <button class="btn btn-white" type="button" data-chat="帮我诊断当前组合">查看 AI 组合诊断 <span data-icon="arrow-up-right" data-icon-size="15"></span></button>
+            <a class="btn btn-outline" href="plan.html" style="background:#ffffff18;border-color:#ffffff5c;color:#fff">查看调仓建议</a>
+          </div>
+        </div>
+        <div class="hero-illustration">
+          <div class="orb"><span data-icon="pie-chart" data-icon-size="61"></span></div>
+          <div class="hero-floating">✓ 风险模型扫描完成</div>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="wallet" data-icon-size="15"></span> 总资产</div>
+          <div class="metric-value" id="totalAssetValue">¥1,336,420</div>
+          <div class="metric-bottom" id="totalAssetBottom">含可用现金 ¥50,000 · 较上月 <span class="positive">↑ 1.82%</span></div>
+          <svg class="metric-spark" data-spark="2,3,4,4,6,5,8,9" data-spark-color="#4c7ce2"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="chart-no-axes-combined" data-icon-size="15"></span> 累计收益</div>
+          <div class="metric-value">+¥86,420</div>
+          <div class="metric-bottom"><span class="positive">+7.20%</span> 累计收益率</div>
+          <svg class="metric-spark" data-spark="2,3,2,5,4,6,7,9" data-spark-color="#09a994"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="target" data-icon-size="15"></span> 近 30 日收益</div>
+          <div class="metric-value">+¥22,983</div>
+          <div class="metric-bottom"><span class="positive">+1.82%</span> 月度表现</div>
+          <svg class="metric-spark" data-spark="3,6,4,3,7,6,8,10" data-spark-color="#4b81cf"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="shield-check" data-icon-size="15"></span> 组合风险等级</div>
+          <div class="metric-value">R3 平衡型</div>
+          <div class="metric-bottom"><span class="tag green">匹配客户画像</span></div>
+          <svg class="metric-spark" data-spark="2,2,2,2,2,2,2,2" data-spark-color="#00a994"></svg>
+        </div>
+      </div>
+
+      <div class="grid grid-alt" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">资产收益趋势</div>
+              <div class="card-sub">当前组合与参考基准收益变化（模拟）</div>
+            </div>
+            <div class="choice" id="rangeChoice">
+              <button type="button" data-range="1M">1M</button>
+              <button type="button" data-range="3M" class="active">3M</button>
+              <button type="button" data-range="6M">6M</button>
+              <button type="button" data-range="1Y">1Y</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+            <b id="trendReturn" style="font-size:23px;color:#08a58e;letter-spacing:-.6px">+6.42%</b>
+            <span class="tag green">当前区间</span>
+          </div>
+          <div class="chart-wrap">
+            <div id="trendChart"></div>
+            <div class="chart-labels"><span>区间起点</span><span>第 1/3 段</span><span>第 2/3 段</span><span>2026/11</span></div>
+          </div>
+          <div class="chart-info" style="margin-top:19px">
+            <span><i class="dot" style="background:#4c7ce2"></i>我的组合</span>
+            <span><i class="dot" style="background:#ced7e6"></i>参考基准</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">我的资产配置</div><div class="card-sub">按大类资产划分</div></div>
+            <a class="mini-link" href="plan.html">查看配置详情 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+          </div>
+          <div class="allocation">
+            <div class="donut" data-donut="38:#4b77d7,42:#19ac9a,15:#e4a54b,5:#9c89e4">
+              <div class="donut-inner"><strong>4 类</strong><small>资产类别</small></div>
+            </div>
+            <div class="legend">
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#4b77d7"></i>权益基金</span><strong>38%</strong></div>
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#19ac9a"></i>债券基金</span><strong>42%</strong></div>
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#e4a54b"></i>货币基金</span><strong>15%</strong></div>
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#9c89e4"></i>黄金基金</span><strong>5%</strong></div>
+            </div>
+          </div>
+          <div class="section-subtext">不同类别对应不同流动性与风险水平，图表基于模拟持仓数据。</div>
+        </div>
+      </div>
+
+      <div class="grid grid-alt" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">我的主要持仓</div><div class="card-sub">按持有市值展示 · 最新模拟估值</div></div>
+            <a class="mini-link" href="holdings.html">查看全部 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>基金名称</th><th>基金类型</th><th>持有市值</th><th>累计收益</th><th>持有占比</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="fund-name"><div class="fund-icon">债</div><div><strong>易方达安心回报债券</strong><div class="small-muted" style="margin-top:4px">110027</div></div></div></td>
+                  <td><span class="tag">债券</span></td>
+                  <td><strong>¥368,200</strong></td>
+                  <td class="positive">+¥14,230<div class="small-muted" style="margin-top:4px">+4.02%</div></td>
+                  <td>28.6%</td>
+                  <td><button class="icon-button" type="button" data-fund-detail="110027"><span data-icon="chevron-right" data-icon-size="16"></span></button></td>
+                </tr>
+                <tr>
+                  <td><div class="fund-name"><div class="fund-icon">权</div><div><strong>景顺长城沪深300增强</strong><div class="small-muted" style="margin-top:4px">000311</div></div></div></td>
+                  <td><span class="tag">权益</span></td>
+                  <td><strong>¥298,450</strong></td>
+                  <td class="positive">+¥28,170<div class="small-muted" style="margin-top:4px">+10.42%</div></td>
+                  <td>23.2%</td>
+                  <td><button class="icon-button" type="button" data-fund-detail="000311"><span data-icon="chevron-right" data-icon-size="16"></span></button></td>
+                </tr>
+                <tr>
+                  <td><div class="fund-name"><div class="fund-icon">权</div><div><strong>易方达蓝筹精选混合</strong><div class="small-muted" style="margin-top:4px">005827</div></div></div></td>
+                  <td><span class="tag">权益</span></td>
+                  <td><strong>¥189,400</strong></td>
+                  <td class="positive">+¥18,650<div class="small-muted" style="margin-top:4px">+8.24%</div></td>
+                  <td>14.7%</td>
+                  <td><button class="icon-button" type="button" data-fund-detail="005827"><span data-icon="chevron-right" data-icon-size="16"></span></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">AI 今日投资洞察</div><div class="card-sub">根据持仓结构与风险画像生成</div></div>
+            <button class="mini-link" type="button" data-chat="给我更多组合优化建议">更多建议 <span data-icon="chevron-right" data-icon-size="13"></span></button>
+          </div>
+          <div class="insight">
+            <div class="insight-icon"><span data-icon="pie-chart" data-icon-size="18"></span></div>
+            <div class="insight-main">
+              <div class="insight-title">权益仓位较目标比例高 3%</div>
+              <div class="insight-desc">建议复核是否需要将部分权益基金调整到固收类基金。</div>
+              <span class="tag gold">配置偏离</span>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-icon" style="background:#fff5ec;color:#d9a254"><span data-icon="shield-alert" data-icon-size="18"></span></div>
+            <div class="insight-main">
+              <div class="insight-title">单只基金集中度处于关注区间</div>
+              <div class="insight-desc">最大单只基金占比 28.6%，可关注组合分散程度。</div>
+              <span class="tag red">风险关注</span>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-icon" style="background:#e7f7f4;color:#00a38f"><span data-icon="circle-check" data-icon-size="18"></span></div>
+            <div class="insight-main">
+              <div class="insight-title">现金流动性配置充足</div>
+              <div class="insight-desc">货币类基金约占 15%，满足当前预设的流动性目标。</div>
+              <span class="tag green">配置合理</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot 概念原型 · 当前页面为模拟业务数据，基金名称、收益率、净值、风险指标和 AI 输出仅用于产品演示，不构成投资建议或任何真实交易承诺。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

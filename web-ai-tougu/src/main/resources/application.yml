@@ -1,0 +1,89 @@
+spring:
+  application:
+    name: web-ai-tougu
+  profiles:
+    default: local
+  datasource:
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    embedded-database-connection: none
+    hikari:
+      pool-name: TouguHikariPool
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      validation-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      keepalive-time: 120000
+      initialization-fail-timeout: 1
+      connection-init-sql: "SET time_zone = '+00:00'"
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+  sql:
+    init:
+      mode: never
+  jackson:
+    time-zone: UTC
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2s
+      connect-timeout: 2s
+
+app:
+  risk-assessment:
+    validity-months: 12
+    # Inclusive score upper bounds for R1..R5. Empty uses five equal ranges of the template maximum.
+    levels: []
+  session:
+    backend: ${SESSION_BACKEND:tomcat}
+  demo-environment: ${DEMO_ENVIRONMENT:true}
+  registration:
+    enabled: ${REGISTRATION_ENABLED:true}
+    investor-demo-cash: ${INVESTOR_DEMO_CASH:50000.00}
+  auth:
+    login-limit:
+      max-failures: ${LOGIN_MAX_FAILURES:5}
+      lock-seconds: ${LOGIN_LOCK_SECONDS:900}
+  ta:
+    enabled: ${TA_ENABLED:false}
+    demo-user-id: ${TA_DEMO_USER_ID:0}
+  agent:
+    internal-token: ${AGENT_INTERNAL_TOKEN:}
+
+server:
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: native
+  tomcat:
+    remoteip:
+      internal-proxies: ${TRUSTED_PROXY_PATTERN:(?!)}
+      remote-ip-header: X-Forwarded-For
+      protocol-header: X-Forwarded-Proto
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: lax
+        secure: ${SESSION_COOKIE_SECURE:false}
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-statement-timeout: 30
+    cache-enabled: false
+    local-cache-scope: STATEMENT
+
+logging:
+  level:
+    root: INFO
+    com.zaxxer.hikari: "OFF"
+    org.mybatis: INFO
+    org.apache.ibatis: INFO
+  pattern:
+    dateformat: "yyyy-MM-dd'T'HH:mm:ss.SSSXXX,UTC"
+

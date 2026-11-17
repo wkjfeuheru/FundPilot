@@ -1,0 +1,17 @@
+/target/
+/logs/
+*.log
+/.idea/
+*.iml
+.env
+.env.*
+!.env.example
+/config/
+application-secret*.yml
+application-secret*.yaml
+application-secret*.properties
+application-local-secret*.yml
+application-local-secret*.yaml
+application-local-secret*.properties
+http-client.private.env.json
+/.http-client/

@@ -1,0 +1,95 @@
+/* ============================================================
+   FundPilot 原型入口页
+   ============================================================ */
+.landing-body {
+  background: radial-gradient(1200px 600px at 15% -10%, #e7eeff 0%, transparent 60%),
+              radial-gradient(900px 500px at 95% 5%, #e2f8f4 0%, transparent 55%),
+              var(--bg);
+}
+
+.landing { max-width: 1240px; margin: 0 auto; padding: 54px 28px 60px; }
+
+.landing-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 46px; }
+.landing-brand { display: flex; align-items: center; gap: 11px; }
+.landing-brand .brand-logo { width: 40px; height: 40px; }
+.landing-brand strong { font-size: 19px; letter-spacing: -.5px; }
+.landing-brand small { display: block; font-size: 10px; letter-spacing: 2px; color: #8c99ac; margin-top: 3px; }
+.landing-badge { font-size: 10.5px; color: #5d6f88; border: 1px solid #dfe6f0; background: #fff; border-radius: 100px; padding: 7px 12px; }
+.landing-nav-actions { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+
+.landing-hero { max-width: 720px; margin-bottom: 40px; }
+.landing-kicker { font-size: 11px; letter-spacing: 1.6px; font-weight: 750; color: #3d6df2; margin-bottom: 14px; }
+.landing-hero h1 { font-size: 38px; line-height: 1.25; letter-spacing: -1.4px; margin: 0 0 16px; }
+.landing-hero h1 span { background: linear-gradient(100deg, #3d6df2, #0aa89a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.landing-hero p { font-size: 13px; color: #7b889c; line-height: 1.9; margin: 0; }
+
+.portal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+
+.portal-card {
+  background: #fff;
+  border: 1px solid #e7ecf4;
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: 0 10px 34px rgba(24, 44, 77, .05);
+  display: flex;
+  flex-direction: column;
+}
+.portal-card.advisor-card { border-color: #dcefe9; }
+.portal-card.ta-card { border-color: #f0e2c4; background: linear-gradient(180deg, #fffdf8 0%, #fff 42%); }
+.portal-head { display: flex; align-items: center; gap: 13px; margin-bottom: 8px; }
+.portal-icon { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: #eaf0ff; color: #3d6df2; }
+.advisor-card .portal-icon { background: #e5f8f5; color: #009f91; }
+.ta-card .portal-icon { background: #fbf0d9; color: #b07a17; }
+.portal-head h2 { font-size: 18px; margin: 0; letter-spacing: -.4px; }
+.portal-head small { display: block; font-size: 10px; letter-spacing: 1.4px; color: #98a4b5; margin-top: 4px; }
+.portal-card > p { font-size: 11.5px; color: #8390a4; line-height: 1.8; margin: 4px 0 18px; }
+
+.page-links { display: grid; gap: 7px; margin-bottom: 20px; }
+.page-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #eef2f8;
+  background: #fbfcfe;
+  font-size: 11.5px;
+  color: #4a5d76;
+  transition: .16s;
+}
+.page-link:hover { border-color: #c9d8f4; background: #f4f8ff; transform: translateX(2px); }
+.advisor-card .page-link:hover { border-color: #bfe4dc; background: #f3fbf9; }
+.ta-card .page-link:hover { border-color: #ecd9b3; background: #fffbf2; }
+.ta-flow { list-style: none; counter-reset: ta-step; margin: 0 0 20px; padding: 0; display: grid; gap: 7px; }
+.ta-flow li { counter-increment: ta-step; display: flex; align-items: center; gap: 9px; font-size: 10.5px; color: #8a7a5c; }
+.ta-flow li::before {
+  content: counter(ta-step);
+  width: 17px; height: 17px; flex: 0 0 17px;
+  border-radius: 50%;
+  background: #fbf0d9; color: #b07a17;
+  font-size: 9.5px; font-weight: 700;
+  display: grid; place-items: center;
+}
+.page-link .code { font-size: 9.5px; color: #9dabbd; margin-left: auto; font-variant-numeric: tabular-nums; }
+.page-link b { font-weight: 650; color: #2c3e58; }
+
+.portal-actions { display: flex; gap: 9px; margin-top: auto; }
+.demo-note { margin-top: 12px; font-size: 10px; line-height: 1.7; color: #a8894f; text-align: center; }
+
+.landing-section { margin-top: 46px; }
+.landing-section h2 { font-size: 17px; letter-spacing: -.4px; margin: 0 0 16px; }
+.notes-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+.note-card { background: #fff; border: 1px solid #e9eef6; border-radius: 14px; padding: 18px; }
+.note-card h3 { font-size: 12px; margin: 10px 0 7px; }
+.note-card p { font-size: 10.5px; color: #8b98aa; line-height: 1.8; margin: 0; }
+.note-icon { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: #eef3fc; color: #4b77d7; }
+
+.landing-footer { margin-top: 50px; padding-top: 22px; border-top: 1px solid #e6ebf3; font-size: 10px; color: #a1acbb; line-height: 1.9; }
+
+@media (max-width: 1080px) {
+  .portal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .landing { padding: 32px 18px 46px; }
+  .landing-hero h1 { font-size: 28px; }
+  .portal-grid, .notes-grid { grid-template-columns: 1fr; }
+}

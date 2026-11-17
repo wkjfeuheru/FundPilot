@@ -1,0 +1,58 @@
+/* ============================================================
+   FundPilot 原型 · 设计令牌
+   与原始 docs/design 原型保持一致；投顾端通过 body.advisor 换肤
+   ============================================================ */
+:root {
+  --nav: #111f36;
+  --nav2: #172a45;
+  --bg: #f5f7fb;
+  --panel: #fff;
+  --text: #182a45;
+  --muted: #8592a5;
+  --line: #e8edf5;
+  --accent: #3d6df2;
+  --accent-weak: #eaf0ff;
+  --success: #08a38e;
+  --success-weak: #e9f8f5;
+  --warn: #e5a23d;
+  --warn-weak: #fff6e9;
+  --danger: #ef6578;
+  --danger-weak: #fff1f3;
+  --shadow: 0 5px 24px rgba(24, 44, 77, .035);
+  --radius: 16px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
+  --text-secondary: #64748b;
+  --on-accent: #fff;
+  --nav-text: #aabbd3;
+  --nav-muted: #8fa3c1;
+  --nav-hover: #ffffff13;
+  --nav-border: #ffffff1b;
+  --nav-indicator: #87adff;
+  --brand-pro: #79ddce;
+  --demo-text: #926125;
+  --demo-border: #f2dfbe;
+  --overlay: #13233b66;
+  --shadow-drawer: -12px 0 40px #182c4d1a;
+  --shadow-float: 0 8px 24px #182c4d30;
+}
+
+/* 投顾端主题：青绿系 */
+body.advisor {
+  --accent: #009f91;
+  --accent-weak: #e5f8f5;
+  --nav: #0c2935;
+  --nav2: #103747;
+  --success: #0ea48b;
+  --nav-indicator: #70ddca;
+}

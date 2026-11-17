@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121f37">
+  <title>基金超市 · FundPilot 用户端</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="investor" data-mode="investor" data-page="funds">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">FUND MARKETPLACE</div>
+          <h1>基金超市</h1>
+          <p>探索基金产品，结合 AI 分析适配程度。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-primary" type="button" data-chat="我的风险等级是R3，帮我分析如何筛选基金">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 帮我选基金
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-hero">
+        <div>
+          <h2>从产品搜索，到适当性匹配</h2>
+          <p>你可以先筛选产品，再由 AI 对基金类型、波动与投资期限进行解释。</p>
+        </div>
+        <div><span class="tag blue" id="fundRiskTag">当前风险评级：R3</span></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <span data-icon="search" data-icon-size="16"></span>
+          <input id="fundSearch" placeholder="搜索基金名称或代码" autocomplete="off">
+        </div>
+        <div class="choice" id="fundTypeChoice">
+          <button type="button" data-type="全部" class="active">全部</button>
+          <button type="button" data-type="权益">权益</button>
+          <button type="button" data-type="债券">债券</button>
+          <button type="button" data-type="货币">货币</button>
+          <button type="button" data-type="黄金">黄金</button>
+        </div>
+      </div>
+
+      <div class="fund-grid" id="fundGrid"></div>
+
+      <div class="footnote">基金名称、净值、收益率与风险指标均为模拟数据。基金详情抽屉中的费率与回撤指标仅用于交互演示，不构成投资建议。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

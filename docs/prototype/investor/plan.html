@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121f37">
+  <title>调仓建议 · FundPilot 用户端</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="investor" data-mode="investor" data-page="plan">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">ADVISOR REBALANCE ADVICE</div>
+          <h1>投顾调仓建议</h1>
+          <p>查看投顾推送的调仓方案，核对调出/调入基金与仓位变化后，由你决定是否确认跟调。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-outline" type="button" data-chat="请解释这份调仓建议的调出调入理由和风险">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 解释调仓建议
+          </button>
+        </div>
+      </div>
+
+      <div class="card" id="adviceEmpty" hidden>
+        <div class="empty" style="padding:60px 20px">
+          <div style="font-size:13px;font-weight:700;color:#4a5d76;margin-bottom:8px">当前没有待确认的调仓建议</div>
+          <div style="margin-bottom:18px">持仓将保持不变。投顾推送新建议后会出现在这里。</div>
+          <div class="inline-actions" style="justify-content:center">
+            <a class="btn btn-primary" href="holdings.html">查看我的持仓</a>
+            <button class="btn btn-outline" type="button" id="askAdvisorEmpty">联系投顾</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="adviceContent" hidden>
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">本次调仓建议</div>
+              <div class="card-sub">建议编号 <span id="adviceId">—</span> · 投顾推送方案，需你手动确认</div>
+            </div>
+            <span class="tag gold" id="adviceStatusTag">待确认</span>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-top">
+              <span style="display:flex;gap:8px;align-items:center">
+                <span data-icon="users" data-icon-size="16"></span> 投顾 <b id="adviceAdvisor">—</b>
+              </span>
+              <span class="small-muted">推送 <span id="advicePushedAt">—</span> · 有效至 <span id="adviceValid">—</span></span>
+            </div>
+            <p id="adviceReason" style="font-size:12px;color:#5b6b81">—</p>
+            <div class="small-muted" style="margin-top:8px" id="adviceBasis">—</div>
+          </div>
+
+          <div class="inline-actions" id="adviceTotals" style="margin-bottom:15px"></div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>基金</th><th>类型</th><th>操作</th><th>当前仓位</th><th>目标仓位</th><th>变化</th><th>金额</th></tr>
+              </thead>
+              <tbody id="adviceItemsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="subsection">大类资产变化</div>
+          <div class="rebal-list" id="adviceAssetRows"></div>
+
+          <div class="role-banner" style="margin-top:14px" id="adviceBlocked" hidden></div>
+          <div class="role-banner" style="margin-top:14px" id="adviceConfirmedHint" hidden></div>
+
+          <div class="inline-actions" style="margin-top:16px">
+            <button class="btn btn-primary" type="button" id="confirmFollow">
+              <span data-icon="circle-check" data-icon-size="15"></span> 确认跟调
+            </button>
+            <button class="btn btn-outline" type="button" id="deferAdvice">暂不跟调</button>
+            <button class="btn btn-outline" type="button" id="askAdvisor">
+              <span data-icon="message-circle" data-icon-size="15"></span> 咨询投顾
+            </button>
+          </div>
+
+          <div class="section-subtext">确认跟调后系统会创建对应的调仓交易并报送 TA；TA 登记确认前持仓保持不变。若你不操作，建议到期后自动失效，持仓同样不变。</div>
+        </div>
+
+        <div class="card" style="margin-top:17px">
+          <div class="card-head">
+            <div><div class="card-title">历史调仓建议</div><div class="card-sub">已跟调、已过期与已暂不跟调的记录</div></div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>建议编号</th><th>推送时间</th><th>建议摘要</th><th>调出金额</th><th>状态</th></tr></thead>
+              <tbody id="adviceHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:17px" id="adviceHelp">
+        <div class="card-head">
+          <div><div class="card-title">跟调说明</div><div class="card-sub">调仓交易如何生效</div></div>
+        </div>
+        <div class="grid grid-three">
+          <div class="summary-box" style="margin:0">
+            <div class="summary-top"><span data-icon="users" data-icon-size="16"></span> 投顾推送</div>
+            <p>投顾根据客户画像、组合偏离与基金池检视结果生成调仓建议，并设定有效期。</p>
+          </div>
+          <div class="summary-box" style="margin:0">
+            <div class="summary-top"><span data-icon="circle-check" data-icon-size="16"></span> 你确认跟调</div>
+            <p>核对调出/调入基金、仓位变化与预计费用后手动确认；不操作则持仓不变。</p>
+          </div>
+          <div class="summary-box" style="margin:0">
+            <div class="summary-top"><span data-icon="clock" data-icon-size="16"></span> TA 确认后生效</div>
+            <p>确认跟调先创建待登记确认交易，TA 回执确认成功后才会更新持仓与现金。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot 概念原型 · 调仓建议、基金数据与交易均为模拟演示，不构成投资建议或真实交易承诺。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

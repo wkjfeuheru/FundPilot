@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>策略库 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="strategy">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">STRATEGY LIBRARY &amp; KYC MATCHING</div>
+          <h1>策略库与客户配置</h1>
+          <p>从经过系统化评价的策略库出发，按客户 KYC 匹配策略，再以 SAA/TAA 双层框架构建基金层组合。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-outline" type="button" data-chat="解释SAA与TAA的偏离以及策略匹配逻辑">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 解释配置框架
+          </button>
+        </div>
+      </div>
+
+      <div class="page-tabs">
+        <button type="button" class="page-tab active" data-strategy-tab="library">策略库<small>评价 / 筛选 / 上下架</small></button>
+        <button type="button" class="page-tab" data-strategy-tab="config">客户配置工作台<small>KYC → 策略 → SAA/TAA → 基金组合</small></button>
+      </div>
+
+      <!-- 页签一：策略库 -->
+      <div id="libraryPanel">
+        <div class="grid grid-four">
+          <div class="card metric">
+            <div class="metric-label"><span data-icon="layers" data-icon-size="15"></span> 在售策略</div>
+            <div class="metric-value">5 个</div>
+            <div class="metric-bottom">另有 1 个观察策略</div>
+            <svg class="metric-spark" data-spark="3,3,4,4,5,5,5,6" data-spark-color="#0ea48b"></svg>
+          </div>
+          <div class="card metric">
+            <div class="metric-label"><span data-icon="users" data-icon-size="15"></span> 策略覆盖客户</div>
+            <div class="metric-value">366 人</div>
+            <div class="metric-bottom">平均每个策略覆盖 61 人</div>
+            <svg class="metric-spark" data-spark="3,4,5,5,6,6,7,8" data-spark-color="#5e98d7"></svg>
+          </div>
+          <div class="card metric">
+            <div class="metric-label"><span data-icon="target" data-icon-size="15"></span> 平均综合评级</div>
+            <div class="metric-value">4.35 星</div>
+            <div class="metric-bottom">7 维系统化评价</div>
+            <svg class="metric-spark" data-spark="5,5,6,6,6,7,7,7" data-spark-color="#09a89a"></svg>
+          </div>
+          <div class="card metric">
+            <div class="metric-label"><span data-icon="refresh-cw" data-icon-size="15"></span> 待更新评价</div>
+            <div class="metric-value">2 个</div>
+            <div class="metric-bottom">评价有效期 6 个月</div>
+            <svg class="metric-spark" data-spark="2,3,2,3,3,2,3,2" data-spark-color="#dfa247"></svg>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:17px">
+          <div class="card-head">
+            <div><div class="card-title">策略库</div><div class="card-sub">风险目标为主分类 · 风格为副标签 · 系统化评价后上架</div></div>
+            <span class="tag blue" id="libraryCount">共 6 个策略</span>
+          </div>
+          <div class="toolbar">
+            <div class="search">
+              <span data-icon="search" data-icon-size="15"></span>
+              <input id="strategySearch" placeholder="搜索策略名称 / 编号 / 风格" autocomplete="off">
+            </div>
+            <div class="choice" id="strategyRiskChoice">
+              <button type="button" data-risk="全部" class="active">全部</button>
+              <button type="button" data-risk="R2">R2</button>
+              <button type="button" data-risk="R3">R3</button>
+              <button type="button" data-risk="R4">R4</button>
+            </div>
+            <select class="select" id="strategyCategory">
+              <option value="全部">全部分类</option>
+              <option value="稳健增值">稳健增值</option>
+              <option value="均衡增长">均衡增长</option>
+              <option value="积极成长">积极成长</option>
+              <option value="固收+">固收+</option>
+              <option value="多资产">多资产</option>
+            </select>
+            <select class="select" id="strategyStatus">
+              <option value="全部">全部状态</option>
+              <option value="在售">在售</option>
+              <option value="观察">观察</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>策略</th><th>分类 / 风险</th><th>收益</th><th>波动</th><th>最大回撤</th><th>夏普</th><th>评级</th><th>服务客户</th><th>状态</th><th>操作</th></tr></thead>
+              <tbody id="strategyBody"></tbody>
+            </table>
+          </div>
+          <div class="section-subtext">评价维度：收益、波动、最大回撤、夏普、稳定性、容量、费率；策略上架、评级与区间带变更均需投研评审与合规审核。</div>
+        </div>
+      </div>
+
+      <!-- 页签二：客户配置工作台 -->
+      <div id="clientConfigPanel" hidden>
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">1. 客户 KYC</div><div class="card-sub">选择客户并核对匹配前置条件</div></div>
+            <select class="select" id="configClientSelect" aria-label="选择客户"></select>
+          </div>
+          <div class="grid grid-alt">
+            <div class="summary-box" id="kycSummary" style="margin:0"></div>
+            <div class="kyc-grid" id="kycChecks"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-alt" style="margin-top:17px">
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">2. 候选策略</div><div class="card-sub">KYC 硬约束过滤 + 加权评分排序</div></div>
+              <span class="tag" id="candidateCount"></span>
+            </div>
+            <div class="match-list" id="candidateList"></div>
+            <div class="section-subtext">评分权重：目标契合 30% · 回撤 20% · 夏普 15% · 稳定性 15% · 收益 10% · 费率 10%。</div>
+          </div>
+
+          <div class="stack">
+            <div class="card">
+              <div class="card-head">
+                <div><div class="card-title">匹配与合规提示</div><div class="card-sub">AI 只解释，不改变规则结论</div></div>
+              </div>
+              <div class="summary-box" style="margin-bottom:0">
+                <div class="summary-top"><span data-icon="shield-check" data-icon-size="16"></span> 硬约束检查</div>
+                <div id="selectedMatchReasons"></div>
+              </div>
+              <div class="role-banner" style="margin-top:13px">策略匹配基于确定性规则与系统评分；AI 可解释匹配理由，但不得修改客户风险等级或策略评级。</div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <div><div class="card-title">当前策略</div><div class="card-sub">选定的策略方向</div></div>
+              </div>
+              <div style="font-size:14px;font-weight:760" id="selectedStrategyTitle">—</div>
+              <div class="inline-actions" id="selectedStrategyTags" style="margin-top:10px"></div>
+              <div class="section-subtext">选定策略后进入 SAA/TAA 双层配置，并从公募基金池构建具体组合。</div>
+              <button class="btn btn-outline btn-sm" type="button" id="explainStrategyConfig" style="margin-top:12px">
+                <span data-icon="sparkles" data-icon-size="14"></span> AI 解释配置逻辑
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="strategyConfigPanel" style="margin-top:17px" hidden>
+          <div class="card-head">
+            <div><div class="card-title">3. SAA / TAA 双层配置</div><div class="card-sub">SAA 定长期基准与区间带 · TAA 在区间内做战术偏离</div></div>
+            <div class="inline-actions" id="saaStatus"></div>
+          </div>
+          <div class="saa-legend">
+            <span><i class="dot" style="background:#2b3f5c"></i>SAA 基准</span>
+            <span><i class="dot" style="background:#e3ecfb"></i>SAA 区间带</span>
+            <span><i class="dot" style="background:#0da59b"></i>TAA 当前权重</span>
+          </div>
+          <div id="saaRows"></div>
+          <div class="inline-actions" style="margin-top:12px">
+            <button class="btn btn-outline btn-sm" type="button" id="resetTaa">
+              <span data-icon="refresh-cw" data-icon-size="14"></span> 重置为 SAA 基准
+            </button>
+            <span class="small-muted">TAA 调整受区间带约束；偏离超过内部阈值将触发风控告警与审批。</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:17px">
+          <div class="card-head">
+            <div><div class="card-title">4. 基金层组合构建</div><div class="card-sub">从公募基金池筛选 · 单基金 ≤25% · 单管理人 ≤35%</div></div>
+            <div class="inline-actions" id="fundPlanSummary"></div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>基金</th><th>类型</th><th>风格</th><th>角色</th><th>权重</th><th>管理费</th><th>流动性</th></tr></thead>
+              <tbody id="fundPlanBody"></tbody>
+            </table>
+          </div>
+          <div class="inline-actions" style="margin-top:15px">
+            <button class="btn btn-primary" type="button" id="generateFundPlan">
+              <span data-icon="sparkles" data-icon-size="15"></span> 按 TAA 重新生成基金组合
+            </button>
+            <button class="btn btn-outline" type="button" id="saveClientPortfolio">保存为客户组合</button>
+            <button class="btn btn-outline" type="button" id="submitStrategyApproval">提交审批</button>
+          </div>
+          <div class="role-banner" style="margin-top:14px">基金层权重为示例优化输出；真实系统需结合风格标签、费率、规模、流动性与穿透集中度进行约束优化。</div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 策略评分、区间带、基金持仓与匹配结果均为模拟数据，不构成投资建议。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

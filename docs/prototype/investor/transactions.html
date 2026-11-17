@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121f37">
+  <title>交易记录 · FundPilot 用户端</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="investor" data-mode="investor" data-page="transactions">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">TRANSACTION CENTER</div>
+          <h1>交易记录</h1>
+          <p>查看申购、赎回、调仓与定投记录；待登记确认交易需提交 TA 回执后才更新持仓与现金。</p>
+        </div>
+        <div class="welcome-ctl">
+          <a class="btn btn-primary" href="funds.html">
+            <span data-icon="plus" data-icon-size="15"></span> 基金申购
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-sidebar">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">最近交易</div><div class="card-sub">模拟流水 · 含申购 / 赎回 / 调仓</div></div>
+            <button class="mini-link" type="button" data-toast="完整交易流水为演示占位，当前原型仅展示近期记录">全部流水 <span data-icon="chevron-right" data-icon-size="13"></span></button>
+          </div>
+          <div id="transactionList"></div>
+          <div class="role-banner" style="margin-top:14px">
+            TA 确认由第三方基金注册登记机构处理，客户侧仅查看状态与回执。
+            演示环境请使用 <a class="mini-link" href="../ta/ta-simulator.html">TA 回执模拟台 <span data-icon="arrow-up-right" data-icon-size="12"></span></a>
+          </div>
+          <div class="section-subtext">状态说明：提交后为"待登记确认"（金色）；TA 回执确认成功后变为"确认成功"（绿色）并更新持仓与现金；确认失败则保持原状并展示失败原因。</div>
+        </div>
+
+        <div class="stack">
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">资金账户</div><div class="card-sub">可用现金与在途冻结</div></div>
+              <span class="tag blue">模拟</span>
+            </div>
+            <div id="cashSummary"></div>
+            <div class="section-subtext">可用现金 = 现金余额 − 待登记申购冻结金额；待登记赎回款在 TA 确认后计入现金。</div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">我的定投计划</div><div class="card-sub">固定周期自动申购（模拟）</div></div>
+              <span class="tag green">执行中</span>
+            </div>
+            <div class="profile-item"><span>每月定投金额</span><strong id="planAmount">¥5,000</strong></div>
+            <div class="profile-item"><span>执行日期</span><strong id="planDay">每月 8 日</strong></div>
+            <div class="profile-item"><span>定投基金数</span><strong id="planFunds">2 只</strong></div>
+            <div class="profile-item"><span>下次执行</span><strong id="planNextRun">2026年12月8日</strong></div>
+            <div class="role-banner" id="planTip" style="margin-top:14px">下次执行：2026年12月8日 · 模拟口径，不触发真实扣款</div>
+            <button class="btn btn-outline" type="button" id="editPlan" style="margin-top:14px">
+              <span data-icon="settings" data-icon-size="15"></span> 调整计划
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div><div class="card-title">交易规则说明</div><div class="card-sub">产品原型提示</div></div></div>
+            <div class="role-banner">基金交易一般涉及申请日、确认日、确认份额、费率和资金结算等状态。原型只演示交互流程，不连接真实基金销售渠道。</div>
+            <div class="section-subtext">定投计划调整会先进行二次确认，确认后写入操作留痕（模拟口径）。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot 概念原型 · 当前页面为模拟业务数据，所有交易记录与金额均为虚构，不构成任何真实交易承诺。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

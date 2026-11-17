@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>FundPilot · AI 基金投顾平台原型</title>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/components.css">
+  <link rel="stylesheet" href="assets/landing.css">
+</head>
+<body class="landing-body">
+<div class="landing">
+
+  <div class="landing-nav">
+    <div class="landing-brand">
+      <div class="brand-logo" aria-hidden="true">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16l5-5 4 2 5-7"/></svg>
+      </div>
+      <div>
+        <strong>FundPilot</strong>
+        <small>AI FUND ADVISORY PROTOTYPE</small>
+      </div>
+    </div>
+    <div class="landing-nav-actions">
+      <a class="btn btn-sm btn-outline" href="auth/login.html">登录</a>
+      <a class="btn btn-sm btn-primary" href="auth/register.html">注册</a>
+      <span class="landing-badge">● 演示环境 · 非真实交易</span>
+    </div>
+  </div>
+
+  <div class="landing-hero">
+    <div class="landing-kicker">FUNDPILOT · 交互原型 V1.6</div>
+    <h1>三端可交互原型<br><span>用户端 7 页面 + FA端 8 模块 + TA 演示台</span></h1>
+    <p>依据《FundPilot 需求规格说明书》拆分重构：保留原有视觉风格与交互密度，按页面拆分为独立 HTML、共享 CSS 与 JS；本期重构策略库与组合管理，加入 KYC 策略匹配、SAA/TAA 双层配置、三级组合、调仓确认与 TA 两阶段交易确认。</p>
+  </div>
+
+  <div class="portal-grid">
+    <section class="portal-card">
+      <div class="portal-head">
+        <div class="portal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12A9 9 0 1 1 12 3v9z"/><path d="M12 3a9 9 0 0 1 9 9h-9z"/></svg>
+        </div>
+        <div>
+          <h2>用户端 · Investor</h2>
+          <small>PERSONAL WEALTH</small>
+        </div>
+      </div>
+      <p>面向个人投资者：资产总览、基金超市与申购、投顾调仓建议、持仓与赎回、交易记录、AI 理财助手与风险画像。</p>
+      <div class="page-links">
+        <a class="page-link" href="investor/overview.html"><b>资产总览</b><span class="code">F-U-101~108</span></a>
+        <a class="page-link" href="investor/funds.html"><b>基金超市</b><span class="code">F-U-201~209</span></a>
+        <a class="page-link" href="investor/plan.html"><b>投顾调仓建议</b><span class="code">F-U-301~320</span></a>
+        <a class="page-link" href="investor/holdings.html"><b>我的持仓</b><span class="code">F-U-401~403</span></a>
+        <a class="page-link" href="investor/transactions.html"><b>交易记录</b><span class="code">F-U-501~507</span></a>
+        <a class="page-link" href="investor/ai.html"><b>AI 理财助手</b><span class="code">F-U-701~715</span></a>
+        <a class="page-link" href="investor/profile.html"><b>风险画像与账户</b><span class="code">F-U-601~603</span></a>
+      </div>
+      <div class="portal-actions">
+        <a class="btn btn-primary" href="investor/overview.html" style="flex:1">进入用户端</a>
+        <a class="btn btn-outline" href="auth/login.html?role=investor">登录</a>
+      </div>
+    </section>
+
+    <section class="portal-card advisor-card">
+      <div class="portal-head">
+        <div class="portal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 4a4 4 0 0 1 0 8M22 20v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="8" r="4"/></svg>
+        </div>
+        <div>
+          <h2>FA端 · 投顾工作台</h2>
+          <small>FUNDPILOT PRO · ADVISOR</small>
+        </div>
+      </div>
+      <p>面向投资顾问：工作台总览、客户 360、策略库与 KYC 配置、三级组合管理、风险监控、报告中心、AI 研究助手与审批合规。</p>
+      <div class="page-links">
+        <a class="page-link" href="fa/overview.html"><b>工作台总览</b><span class="code">F-A-101~107</span></a>
+        <a class="page-link" href="fa/clients.html"><b>客户 360</b><span class="code">F-A-201~207</span></a>
+        <a class="page-link" href="fa/strategy.html"><b>策略库</b><span class="code">F-A-301~315</span></a>
+        <a class="page-link" href="fa/portfolios.html"><b>组合管理</b><span class="code">F-A-401~410</span></a>
+        <a class="page-link" href="fa/risks.html"><b>风险监控</b><span class="code">F-A-501~508</span></a>
+        <a class="page-link" href="fa/reports.html"><b>投顾报告</b><span class="code">F-A-601~609</span></a>
+        <a class="page-link" href="fa/ai.html"><b>AI 研究助手</b><span class="code">F-A-701~711</span></a>
+        <a class="page-link" href="fa/compliance.html"><b>审批与合规</b><span class="code">F-A-801~806</span></a>
+      </div>
+      <div class="portal-actions">
+        <a class="btn btn-primary" href="fa/overview.html" style="flex:1;background:#009f91">进入 FA 端</a>
+        <a class="btn btn-outline" href="auth/login.html?role=advisor">登录</a>
+      </div>
+    </section>
+
+    <section class="portal-card ta-card">
+      <div class="portal-head">
+        <div class="portal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 7.6 8 9 4.5-1.4 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h2>TA端 · 登记确认</h2>
+          <small>TRANSFER AGENT · DEMO</small>
+        </div>
+      </div>
+      <p>模拟第三方基金注册登记机构：读取待登记确认的申购、赎回与调仓交易，逐笔或批量提交 TA 回执，可注入暂停申购、限购等失败原因，用于验证交易两阶段确认与现金/持仓联动。</p>
+      <div class="page-links">
+        <a class="page-link" href="ta/ta-simulator.html"><b>TA 回执模拟台</b><span class="code">DEMO-01</span></a>
+        <a class="page-link" href="investor/transactions.html"><b>客户交易记录（只读）</b><span class="code">F-U-501~507</span></a>
+        <a class="page-link" href="fa/portfolios.html"><b>投顾交易状态（只读）</b><span class="code">F-A-401~410</span></a>
+      </div>
+      <ol class="ta-flow">
+        <li>客户提交申购 / 赎回 / 确认跟调</li>
+        <li>模拟台按 T+1、T 日净值提交回执</li>
+        <li>客户只读查看确认成功或失败结果</li>
+      </ol>
+      <div class="portal-actions">
+        <a class="btn btn-primary" href="ta/ta-simulator.html" style="flex:1;background:#b07a17">进入 TA 模拟台</a>
+      </div>
+      <div class="demo-note">演示端 · 非产品功能，仅用于模拟第三方 TA 回执，不接入真实登记结算。</div>
+    </section>
+  </div>
+
+  <section class="landing-section">
+    <h2>本期原型覆盖的全局交互</h2>
+    <div class="notes-grid">
+      <div class="note-card">
+        <div class="note-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+        </div>
+        <h3>通知中心与红点</h3>
+        <p>铃铛打开最小通知列表，未读红点驱动角标；点击单条通知跳转对应页面并置为已读。FA 端风险导航项显示未复核数量。</p>
+      </div>
+      <div class="note-card">
+        <div class="note-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11a8 8 0 0 1-8 8 9 9 0 0 1-4-.8L3 21l2-5a9 9 0 0 1-1-5 8 8 0 0 1 8-8 9 9 0 0 1 9 8Z"/></svg>
+        </div>
+        <h3>AI 对话与预置 Prompt</h3>
+        <p>两端 AI 助手支持快捷提示词、关键词路由回复与跨页面预填问题；对话记录在会话内保留，页面底部固定免责声明。</p>
+      </div>
+      <div class="note-card">
+        <div class="note-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+        </div>
+        <h3>审核链路与留痕提示</h3>
+        <p>方案、报告、审批均保留"AI 草案 → 规则校验 → 人工复核 → 合规审批 → 留痕执行"状态，关键操作仅更新演示状态。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section">
+    <h2>目录结构</h2>
+    <div class="note-card" style="font-family:'SFMono-Regular',Consolas,monospace;font-size:11px;line-height:2;color:#5b6b81">
+      prototype/<br>
+      ├─ index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三端入口<br>
+      ├─ assets/<br>
+      │&nbsp;&nbsp;├─ tokens.css&nbsp;&nbsp;&nbsp;&nbsp;设计令牌与两端主题<br>
+      │&nbsp;&nbsp;├─ base.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;框架 / 侧栏 / 栅格 / 响应式<br>
+      │&nbsp;&nbsp;├─ components.css&nbsp;组件与扩展交互样式<br>
+      │&nbsp;&nbsp;├─ landing.css&nbsp;&nbsp;&nbsp;入口页样式<br>
+      │&nbsp;&nbsp;├─ auth.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录 / 注册页样式<br>
+      │&nbsp;&nbsp;├─ data.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;模拟数据<br>
+      │&nbsp;&nbsp;├─ app.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共享运行时<br>
+      │&nbsp;&nbsp;├─ auth.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录注册交互<br>
+      │&nbsp;&nbsp;├─ demo.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;演示工具样式<br>
+      │&nbsp;&nbsp;└─ ta-simulator.js&nbsp;TA 回执模拟台<br>
+      ├─ auth/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;登录 / 注册 2 个页面<br>
+      ├─ investor/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用户端 7 个页面<br>
+      ├─ fa/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FA 端 8 个页面<br>
+      └─ ta/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TA 端回执模拟台（非产品功能）
+    </div>
+  </section>
+
+  <div class="landing-footer">
+    FundPilot 概念原型 · 页面内所有基金名称、净值、收益率、客户数据与风险指标均为虚构演示数据，不构成投资建议或任何真实交易承诺。<br>
+    交互层面不连接服务器、真实行情、交易通道或实时大模型推理。
+  </div>
+</div>
+</body>
+</html>

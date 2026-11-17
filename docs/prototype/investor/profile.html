@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121f37">
+  <title>风险画像与账户 · FundPilot 用户端</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="investor" data-mode="investor" data-page="profile">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">RISK PROFILE &amp; ACCOUNT</div>
+          <h1>风险画像与账户</h1>
+          <p>管理你的风险承受能力和投资偏好，完善个性化建议依据。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-outline" type="button" data-chat="我的风险测评结果对资产配置有什么影响">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 解释我的风险画像
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-two">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">风险测评摘要</div><div class="card-sub">最近测评日期：<span id="profileDate">2026/09/10</span></div></div>
+            <span class="tag green" id="profileTag">当前评估有效 · R3 平衡</span>
+          </div>
+          <div class="allocation">
+            <div class="donut" id="profileDonut" style="background:conic-gradient(#3d6df2 60%,#eef2f8 60% 100%)">
+              <div class="donut-inner">
+                <strong id="profileLevel">R3</strong>
+                <small id="profileLevelName">平衡型</small>
+              </div>
+            </div>
+            <div class="legend">
+              <div style="font-size:12px;font-weight:700">测评结论</div>
+              <div class="section-subtext" id="profileConclusion" style="margin-top:0">接受适度波动，适合股债均衡的配置结构。</div>
+              <div class="profile-item" style="padding:8px 0"><span>评估有效期</span><strong>12 个月</strong></div>
+              <div class="profile-item" style="padding:8px 0"><span>问卷来源</span><strong>机构适当性问卷</strong></div>
+            </div>
+          </div>
+          <div class="role-banner" style="margin-top:14px">重新测评会更新风险等级，并同步至「智能资产配置」权重映射与「基金超市」适当性提示。</div>
+          <button class="btn btn-primary" type="button" id="retakeQuiz" style="margin-top:14px">
+            <span data-icon="refresh-cw" data-icon-size="15"></span> 重新风险测评
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">账户基础信息</div><div class="card-sub">个人信息与投资偏好（演示）</div></div>
+          </div>
+          <div class="profile-item"><span>投资者姓名</span><strong>陈女士 · 演示</strong></div>
+          <div class="profile-item"><span>账户类型</span><strong>个人投资账户</strong></div>
+          <div class="profile-item"><span>投资期限偏好</span><strong>3–5 年</strong></div>
+          <div class="profile-item"><span>流动性需求</span><strong>中等</strong></div>
+          <div class="profile-item"><span>安全认证</span><span class="tag green">已验证</span></div>
+          <div class="profile-item"><span>账户状态</span><span class="tag green">正常</span></div>
+          <div class="section-subtext">账户信息为原型演示占位，不涉及真实身份信息或资金账户。</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head">
+          <div><div class="card-title">适当性管理说明</div><div class="card-sub">监管要求对应的原型呈现</div></div>
+        </div>
+        <div class="grid grid-three">
+          <div class="summary-box" style="margin:0">
+            <div class="summary-top"><span data-icon="shield-check" data-icon-size="16"></span> 风险测评</div>
+            <p>测评结果用于确定可投产品类型与配置权重区间，并保留最近测评日期与有效期。</p>
+          </div>
+          <div class="summary-box" style="margin:0">
+            <div class="summary-top"><span data-icon="target" data-icon-size="16"></span> 适当性匹配</div>
+            <p>基金产品风险等级须与投资者风险承受能力匹配，AI 推荐仅作解释，最终须经确定性规则校验。</p>
+          </div>
+          <div class="summary-box" style="margin:0">
+            <div class="summary-top"><span data-icon="file-text" data-icon-size="16"></span> 留痕要求</div>
+            <p>测评、确认与交易操作应形成可追溯记录；原型仅演示交互，不产生真实审计数据。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot 概念原型 · 风险等级与测评结果均为演示数据，不构成投资建议。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

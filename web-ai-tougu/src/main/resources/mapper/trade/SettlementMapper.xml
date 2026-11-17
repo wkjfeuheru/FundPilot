@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.trade.mapper.SettlementMapper">
+  <select id="funds" resultType="com.jason.trade.model.SettlementFund">
+    SELECT f.id,f.name,f.fee_redeem,n.unit_nav FROM fund f LEFT JOIN fund_nav n ON n.fund_id=f.id AND n.nav_date=#{date}
+      AND n.deleted_at='1970-01-01 00:00:00.000'
+    WHERE f.id IN <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </select>
+  <select id="holdings" resultType="com.jason.trade.model.HoldingRow">
+    SELECT * FROM holding WHERE user_id=#{userId} AND deleted_at='1970-01-01 00:00:00.000' AND fund_id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach> ORDER BY fund_id
+  </select>
+  <insert id="saveHoldings">
+    INSERT INTO holding(user_id,fund_id,shares,cost_amount) VALUES
+    <foreach collection="rows" item="h" separator=",">(#{h.userId},#{h.fundId},#{h.shares},#{h.costAmount})</foreach>
+    ON DUPLICATE KEY UPDATE shares=VALUES(shares),cost_amount=VALUES(cost_amount),deleted_at='1970-01-01 00:00:00.000',updated_at=UTC_TIMESTAMP(3)
+  </insert>
+  <update id="confirmItems">
+    UPDATE trade_order_item SET confirmed_amount=CASE id
+    <foreach collection="items" item="i">WHEN #{i.id} THEN #{i.confirmedAmount}</foreach> END,
+    confirmed_shares=CASE id <foreach collection="items" item="i">WHEN #{i.id} THEN #{i.confirmedShares}</foreach> END
+    WHERE id IN <foreach collection="items" item="i" open="(" separator="," close=")">#{i.id}</foreach>
+  </update>
+  <insert id="receipt" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO ta_receipt(order_id,receipt_no,result,confirm_date,nav_date,unit_nav,total_confirmed_amount,total_fee,fail_reason,received_at)
+    VALUES(#{orderId},#{receiptNo},#{result},#{confirmDate},#{navDate},#{unitNav},#{totalConfirmedAmount},#{totalFee},#{failReason},UTC_TIMESTAMP(3))
+  </insert>
+  <insert id="audit">
+    INSERT INTO audit_log(actor_user_id,actor_role,action,object_type,object_id,object_name,detail,trace_id,occurred_at)
+    VALUES(0,3,5,'trade_order',#{orderId},#{code},CAST(#{detail} AS JSON),#{traceId},UTC_TIMESTAMP(3))
+  </insert>
+  <insert id="event">
+    INSERT INTO event_outbox(event_type,aggregate_type,aggregate_id,payload,next_retry_at)
+    VALUES(#{type},'trade_order',#{orderId},CAST(#{payload} AS JSON),UTC_TIMESTAMP(3))
+  </insert>
+  <select id="currentHoldings" resultType="com.jason.trade.model.HoldingRow">
+    SELECT h.*,f.fund_code,f.name AS fund_name,f.fund_type,f.risk_level,f.latest_nav,f.latest_nav_date AS nav_date,
+      f.purchase_status,f.redeem_status FROM holding h JOIN fund f ON f.id=h.fund_id
+    WHERE h.user_id=#{userId} AND h.shares>0 AND h.deleted_at='1970-01-01 00:00:00.000'
+    ORDER BY h.shares*f.latest_nav DESC,h.id
+  </select>
+</mapper>

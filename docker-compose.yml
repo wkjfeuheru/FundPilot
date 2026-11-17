@@ -1,0 +1,47 @@
+# FundPilot 开发环境一键部署：MySQL 8.0 + Redis 7
+# 凭据从同目录 .env 读取（该文件不入库，见 .gitignore）
+name: tougu-platform
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tougu-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: tougu_platform   # 首次启动自动建库
+      TZ: UTC
+    # utf8mb4 + 0900_ai_ci 与 schema.sql 建库口径一致；时区固定 UTC（JDBC 侧已有 connectionTimeZone=UTC 双保险）
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+00:00
+    volumes:
+      - tougu-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: tougu-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - tougu-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  tougu-mysql-data:
+  tougu-redis-data:

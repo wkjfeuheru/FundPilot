@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.trade.mapper.TradeMapper">
+  <select id="cash" resultType="com.jason.trade.model.CashRow">
+    SELECT c.user_id,c.cash_balance,c.updated_at,COALESCE((SELECT SUM(o.freeze_amount) FROM trade_order o
+      WHERE o.user_id=c.user_id AND o.status=1 AND o.deleted_at='1970-01-01 00:00:00.000'),0) AS frozen_amount
+    FROM cash_account c WHERE c.user_id=#{userId} AND c.deleted_at='1970-01-01 00:00:00.000'
+  </select>
+  <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO trade_order(order_code,user_id,trade_type,status,trade_date,total_amount_in,total_fee,freeze_amount,remark)
+    VALUES(#{orderCode},#{userId},1,1,#{tradeDate},#{totalAmountIn},#{totalFee},#{freezeAmount},#{remark})
+  </insert>
+  <insert id="insertItem">
+    INSERT INTO trade_order_item(order_id,fund_id,direction,amount,shares,fee) VALUES(#{orderId},#{fundId},1,#{amount},0,#{fee})
+  </insert>
+  <insert id="audit">
+    INSERT INTO audit_log(actor_user_id,actor_role,action,object_type,object_id,object_name,detail,trace_id,occurred_at)
+    VALUES(#{userId},1,8,'trade_order',#{orderId},#{code},CAST(#{detail} AS JSON),#{traceId},UTC_TIMESTAMP(3))
+  </insert>
+  <sql id="scope">
+    user_id=#{userId} AND deleted_at='1970-01-01 00:00:00.000'
+    <if test="q.tradeType != null">AND trade_type=#{q.typeCode}</if>
+    <if test="q.status != null">AND status=#{q.statusCode}</if>
+    <if test="q.from != null">AND trade_date &gt;= #{q.from}</if>
+    <if test="q.to != null">AND trade_date &lt;= #{q.to}</if>
+  </sql>
+  <select id="count" resultType="long">SELECT COUNT(*) FROM trade_order WHERE <include refid="scope"/></select>
+  <select id="orders" resultType="com.jason.trade.model.OrderRow">
+    SELECT * FROM trade_order WHERE <include refid="scope"/> ORDER BY created_at DESC,id DESC LIMIT #{q.pageSize} OFFSET #{q.offset}
+  </select>
+  <select id="order" resultType="com.jason.trade.model.OrderRow">
+    SELECT * FROM trade_order WHERE user_id=#{userId} AND id=#{id} AND deleted_at='1970-01-01 00:00:00.000'
+  </select>
+  <select id="items" resultType="com.jason.trade.model.ItemRow">
+    SELECT i.*,COALESCE(f.fund_code,'') AS fund_code,COALESCE(f.name,'已下架基金') AS fund_name
+    FROM trade_order_item i LEFT JOIN fund f ON f.id=i.fund_id WHERE i.deleted_at='1970-01-01 00:00:00.000'
+    AND i.order_id IN <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach> ORDER BY i.id
+  </select>
+  <select id="receipts" resultType="com.jason.trade.model.ReceiptRow">
+    SELECT * FROM ta_receipt WHERE deleted_at='1970-01-01 00:00:00.000' AND order_id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </select>
+</mapper>

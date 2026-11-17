@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121f37">
+  <title>我的持仓 · FundPilot 用户端</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="investor" data-mode="investor" data-page="holdings">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">MY HOLDINGS</div>
+          <h1>我的基金持仓</h1>
+          <p>随时了解当前持仓构成、浮动盈亏和配置偏离。</p>
+        </div>
+        <div class="welcome-ctl">
+          <a class="btn btn-outline" href="funds.html"><span data-icon="plus" data-icon-size="15"></span> 基金申购</a>
+          <button class="btn btn-primary" type="button" data-chat="帮我分析当前持仓结构、风险集中度和可以改进的地方">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 持仓体检
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="wallet" data-icon-size="15"></span> 持仓市值</div>
+          <div class="metric-value">¥1,286,420</div>
+          <div class="metric-bottom"><span class="positive">+1.82%</span> 月度变化</div>
+          <svg class="metric-spark" data-spark="2,3,4,4,6,5,8,9" data-spark-color="#18ab92"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="chart-no-axes-combined" data-icon-size="15"></span> 累计浮动收益</div>
+          <div class="metric-value">+¥86,420</div>
+          <div class="metric-bottom">总持仓口径 · 模拟</div>
+          <svg class="metric-spark" data-spark="2,3,2,5,4,6,7,9" data-spark-color="#18ab92"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="pie-chart" data-icon-size="15"></span> 最大单只基金占比</div>
+          <div class="metric-value">28.6%</div>
+          <div class="metric-bottom"><span class="tag gold">关注集中度</span></div>
+          <svg class="metric-spark" data-spark="5,5,5,6,6,6,6,6" data-spark-color="#e1ab49"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="wallet" data-icon-size="15"></span> 可用现金</div>
+          <div class="metric-value" id="cashValue">¥50,000</div>
+          <div class="metric-bottom" id="cashBottom">冻结待登记申购 ¥0</div>
+          <svg class="metric-spark" data-spark="4,4,4,4,4,4,4,4" data-spark-color="#5d85d8"></svg>
+        </div>
+      </div>
+
+      <div class="grid grid-sidebar" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">基金持仓明细</div><div class="card-sub">截至 2026/11/12 的模拟资产数据</div></div>
+            <button class="mini-link" type="button" data-chat="帮我分析当前持仓的集中度和配置偏离">AI 分析持仓 <span data-icon="chevron-right" data-icon-size="13"></span></button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>基金名称</th><th>基金类型</th><th>持有市值</th><th>累计收益</th><th>持有占比</th><th>操作</th></tr></thead>
+              <tbody id="holdingsBody"></tbody>
+            </table>
+          </div>
+          <div class="section-subtext">点击"赎回"可提交赎回申请（按份额，T+1 确认）；行尾箭头可查看基金详情、费率与净值走势。</div>
+        </div>
+
+        <div class="stack">
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">结构分布</div><div class="card-sub">按大类资产</div></div>
+              <a class="mini-link" href="plan.html">查看调仓建议 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+            </div>
+            <div class="allocation" style="flex-direction:column;align-items:stretch;gap:17px">
+              <div class="donut" data-donut="38:#4b77d7,42:#19ac9a,15:#e4a54b,5:#9c89e4" style="margin:auto">
+                <div class="donut-inner"><strong>R3</strong><small>风险匹配</small></div>
+              </div>
+              <div class="legend">
+                <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#4b77d7"></i>权益基金</span><strong>38%</strong></div>
+                <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#19ac9a"></i>债券基金</span><strong>42%</strong></div>
+                <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#e4a54b"></i>货币基金</span><strong>15%</strong></div>
+                <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#9c89e4"></i>黄金基金</span><strong>5%</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">组合健康度</div><div class="card-sub">AI 预设示例指标</div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <b style="font-size:29px;color:#05a893">82<span style="font-size:14px;color:#9cabbd"> / 100</span></b>
+              <span class="tag green">良好</span>
+            </div>
+            <div class="progress" style="margin:14px 0"><i style="width:82%"></i></div>
+            <div class="section-subtext">需要重点留意：部分单只基金持仓集中度、配置比例偏离。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot 概念原型 · 当前页面为模拟业务数据，基金名称、收益率、净值、风险指标和 AI 输出仅用于产品演示，不构成投资建议或任何真实交易承诺。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

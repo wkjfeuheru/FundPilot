@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>AI 研究助手 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="ai">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">ADVISOR AI RESEARCH</div>
+          <h1>AI 投研与投顾助手</h1>
+          <p>以客户、组合和研究数据为上下文，支持多工具协同分析与可审草案生成。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-primary" type="button" data-chat="总结今日客户风险">
+            <span data-icon="bot" data-icon-size="15"></span> 开启 AI 对话
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-hero">
+        <div>
+          <h2>为投顾提供可审核的智能分析</h2>
+          <p>AI 可生成组合诊断、策略对比与报告提纲，但审批权仍在人：所有产物均需规则校验、投顾复核与留痕。</p>
+        </div>
+        <span class="tag green">投顾工作区 · 演示账号</span>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <div class="feature-icon"><span data-icon="users" data-icon-size="18"></span></div>
+          <h3>客户组合诊断</h3>
+          <p>聚合客户画像、持仓和风险限制，形成需要复核的问题清单。</p>
+          <div class="feature-actions">
+            <button class="btn btn-sm btn-outline" type="button" data-chat="帮我诊断陈悦的客户组合">开始分析</button>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><span data-icon="pie-chart" data-icon-size="18"></span></div>
+          <h3>策略匹配与双层配置</h3>
+          <p>按客户 KYC 筛选策略，并解释 SAA 基准与 TAA 偏离。</p>
+          <div class="feature-actions">
+            <button class="btn btn-sm btn-outline" type="button" data-chat="解释SAA与TAA的偏离以及策略如何匹配客户KYC">开始分析</button>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon"><span data-icon="file-text" data-icon-size="18"></span></div>
+          <h3>AI 投顾报告</h3>
+          <p>提取客户与组合数据，生成结构化、待审的沟通草稿。</p>
+          <div class="feature-actions">
+            <button class="btn btn-sm btn-outline" type="button" data-chat="帮我生成客户沟通报告">开始分析</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <div class="card-head">
+          <div><div class="card-title">AI 能力与安全边界</div><div class="card-sub">所有输出为草案，需人工复核</div></div>
+        </div>
+        <div class="insight">
+          <div class="insight-icon"><span data-icon="layers" data-icon-size="18"></span></div>
+          <div class="insight-main">
+            <div class="insight-title">上下文感知</div>
+            <div class="insight-desc">关联客户档案、持仓、风险等级与当前工作区状态。</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="insight-icon"><span data-icon="target" data-icon-size="18"></span></div>
+          <div class="insight-main">
+            <div class="insight-title">金融工具调用</div>
+            <div class="insight-desc">可调用量化优化、绩效指标与风险校验工具，输出可复核的计算依据。</div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="insight-icon"><span data-icon="shield-check" data-icon-size="18"></span></div>
+          <div class="insight-main">
+            <div class="insight-title">人工可控</div>
+            <div class="insight-desc">方案、报告进入审批链路，审批权在人；AI 不得修改风险阈值或自动下单。</div>
+          </div>
+        </div>
+        <div class="role-banner" style="margin-top:12px">AI 建议审批链路：AI 生成草案 → 风险/适当性校验 → 投顾人工复核 → 合规审批与客户确认 → 留痕与模拟执行。</div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · AI 回复由预设模板生成，不连接实时模型与真实客户数据。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

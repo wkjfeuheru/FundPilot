@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.user.mapper.RiskProfileMapper">
+  <select id="find" resultType="com.jason.user.model.RiskProfileRow">
+    SELECT p.user_id,p.risk_level,p.investment_goal,p.goal_category,p.horizon_years,p.liquidity_need,
+      p.experience_years,p.account_type,p.evaluated_at,p.valid_until,
+      (SELECT a.id FROM risk_assessment a WHERE a.user_id=p.user_id AND a.deleted_at='1970-01-01 00:00:00.000'
+        ORDER BY a.evaluated_at DESC,a.id DESC LIMIT 1) AS latest_assessment_id
+    FROM risk_profile p WHERE p.user_id=#{id} AND p.deleted_at='1970-01-01 00:00:00.000'
+  </select>
+</mapper>

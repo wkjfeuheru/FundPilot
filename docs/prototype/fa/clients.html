@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>客户 360 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="clients">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">CLIENT 360</div>
+          <h1>客户 360 管理</h1>
+          <p>统一查看客户画像、投资目标、持仓表现与 AI 待办建议。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-primary" type="button" data-chat="帮我分析当前客户池的投资目标和风险问题">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 客户画像摘要
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="users" data-icon-size="15"></span> 在管客户</div>
+          <div class="metric-value">286 人</div>
+          <div class="metric-bottom">累计服务客户</div>
+          <svg class="metric-spark" data-spark="2,3,3,4,5,5,6,8" data-spark-color="#17ad9f"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="shield-check" data-icon-size="15"></span> 风险测评覆盖率</div>
+          <div class="metric-value">98.6%</div>
+          <div class="metric-bottom"><span class="tag gold">需补全 4 人</span></div>
+          <svg class="metric-spark" data-spark="6,7,7,8,8,9,9,10" data-spark-color="#09a89a"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="message-circle" data-icon-size="15"></span> 最近 7 日待联系</div>
+          <div class="metric-value">18 人</div>
+          <div class="metric-bottom">含高优先级客户</div>
+          <svg class="metric-spark" data-spark="3,4,5,4,6,5,7,6" data-spark-color="#dfac54"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="target" data-icon-size="15"></span> 客户满意度</div>
+          <div class="metric-value">94%</div>
+          <div class="metric-bottom">模拟服务指标</div>
+          <svg class="metric-spark" data-spark="5,6,6,7,7,8,8,9" data-spark-color="#4ba7c3"></svg>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:17px">
+        <div class="card-head">
+          <div><div class="card-title">客户列表</div><div class="card-sub">点击客户查看详情、适当性和 AI 方案生成入口</div></div>
+          <span class="tag blue">演示客户 5 位</span>
+        </div>
+
+        <div class="toolbar">
+          <div class="search">
+            <span data-icon="search" data-icon-size="15"></span>
+            <input id="clientSearch" placeholder="搜索客户姓名 / ID / 风险等级" autocomplete="off">
+          </div>
+          <button class="btn btn-outline btn-sm" type="button" id="toggleFilter"><span data-icon="filter" data-icon-size="15"></span> 筛选</button>
+        </div>
+
+        <div class="filter-panel" id="filterPanel">
+          <div class="filter-group">
+            <strong>风险等级</strong>
+            <button class="chip" type="button" data-filter-group="risk" data-filter-value="R1">R1 保守</button>
+            <button class="chip" type="button" data-filter-group="risk" data-filter-value="R2">R2 稳健</button>
+            <button class="chip" type="button" data-filter-group="risk" data-filter-value="R3">R3 平衡</button>
+            <button class="chip" type="button" data-filter-group="risk" data-filter-value="R4">R4 成长</button>
+            <button class="chip" type="button" data-filter-group="risk" data-filter-value="R5">R5 进取</button>
+          </div>
+          <div class="filter-group">
+            <strong>服务状态</strong>
+            <button class="chip" type="button" data-filter-group="status" data-filter-value="待沟通">待沟通</button>
+            <button class="chip" type="button" data-filter-group="status" data-filter-value="待调仓">待调仓</button>
+            <button class="chip" type="button" data-filter-group="status" data-filter-value="跟进中">跟进中</button>
+            <button class="chip" type="button" data-filter-group="status" data-filter-value="正常">正常</button>
+          </div>
+          <div class="filter-group">
+            <strong>优先级</strong>
+            <button class="chip" type="button" data-filter-group="priority" data-filter-value="高">高</button>
+            <button class="chip" type="button" data-filter-group="priority" data-filter-value="中">中</button>
+            <button class="chip" type="button" data-filter-group="priority" data-filter-value="低">低</button>
+          </div>
+          <div class="filter-summary">
+            <span id="filterSummary">未设置筛选条件</span>
+            <button class="mini-link" type="button" id="clearFilters">清空条件</button>
+          </div>
+        </div>
+
+        <div id="clientTable"></div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 客户数据与指标均为模拟数据，不调用任何真实客户账户系统。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

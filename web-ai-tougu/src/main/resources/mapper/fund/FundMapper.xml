@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.fund.mapper.FundMapper">
+  <sql id="view">
+    SELECT f.*, f.return_1y AS return1y, f.is_pool_eligible AS pool_eligible,
+           (fav.id IS NOT NULL) AS favorite,
+           n.per_10k_income AS per10k_income, n.annualized_7d AS annualized7d
+    FROM fund f
+    LEFT JOIN favorite fav ON fav.fund_id=f.id AND fav.user_id=#{userId}
+    LEFT JOIN fund_nav n ON n.fund_id=f.id AND n.nav_date=f.latest_nav_date AND n.deleted_at='1970-01-01 00:00:00.000'
+    WHERE f.deleted_at='1970-01-01 00:00:00.000'
+  </sql>
+  <select id="list" resultType="com.jason.fund.model.FundRow">
+    <include refid="view"/>
+    <if test="type != null">AND f.fund_type=#{type}</if>
+    <if test="risk != null">AND f.risk_level=#{risk}</if>
+    <if test="keyword != null and keyword != ''">AND (LOCATE(#{keyword},f.name)&gt;0 OR LOCATE(#{keyword},f.fund_code)&gt;0)</if>
+    <if test="poolOnly">AND f.is_pool_eligible=1</if>
+    <if test="favoritesOnly">AND fav.id IS NOT NULL ORDER BY fav.created_at DESC, fav.id DESC</if>
+    <if test="!favoritesOnly">ORDER BY f.fund_type ASC,f.fund_code ASC</if>
+  </select>
+  <select id="find" resultType="com.jason.fund.model.FundRow"><include refid="view"/> AND f.id=#{id}</select>
+  <select id="navs" resultType="com.jason.fund.model.NavRow">
+    SELECT nav_date,unit_nav,accum_nav,per_10k_income AS per10k_income,annualized_7d AS annualized7d
+    FROM fund_nav WHERE fund_id=#{id} AND nav_date BETWEEN #{from} AND #{to}
+    AND deleted_at='1970-01-01 00:00:00.000' ORDER BY nav_date ASC
+  </select>
+</mapper>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>风险监控 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="risks">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">RISK MONITORING</div>
+          <h1>风险监控与预警</h1>
+          <p>规则引擎识别投资限制、集中度与配置漂移，AI 协助解释原因。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-primary" type="button" data-chat="分析当前风险告警并给出人工处理优先级">
+            <span data-icon="sparkles" data-icon-size="15"></span> AI 风险扫描摘要
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="shield-alert" data-icon-size="15"></span> 待处理告警</div>
+          <div class="metric-value" id="pendingRiskCount">6 项</div>
+          <div class="metric-bottom">KYC / SAA / TAA / 集中度</div>
+          <svg class="metric-spark" data-spark="4,7,6,5,4,4,5,8" data-spark-color="#ec7886"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="circle-alert" data-icon-size="15"></span> 高优先级</div>
+          <div class="metric-value" id="highRiskCount">3 项</div>
+          <div class="metric-bottom">需要优先复核</div>
+          <svg class="metric-spark" data-spark="2,4,3,4,2,3,2,3" data-spark-color="#e87b86"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="layers" data-icon-size="15"></span> 观察中组合</div>
+          <div class="metric-value">12 个</div>
+          <div class="metric-bottom">含模型组合与客户组合</div>
+          <svg class="metric-spark" data-spark="4,4,5,5,6,6,6,7" data-spark-color="#e5a14e"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="shield-check" data-icon-size="15"></span> 预设规则数</div>
+          <div class="metric-value">46 条</div>
+          <div class="metric-bottom">KYC / SAA / TAA / 集中度 / 健康</div>
+          <svg class="metric-spark" data-spark="6,6,6,7,7,7,7,8" data-spark-color="#14a894"></svg>
+        </div>
+      </div>
+
+      <div class="grid grid-sidebar" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">实时风险事件列表</div><div class="card-sub">按 KYC 适配、SAA/TAA 偏离、集中度与策略健康分类</div></div>
+            <span class="tag gold" id="riskCategoryCount">6 条</span>
+          </div>
+          <div class="choice" id="riskFilters" style="margin-bottom:14px">
+            <button type="button" data-risk-cat="全部" class="active">全部</button>
+            <button type="button" data-risk-cat="KYC与策略适配">KYC 适配</button>
+            <button type="button" data-risk-cat="SAA/TAA偏离">SAA / TAA</button>
+            <button type="button" data-risk-cat="集中度与流动性">集中度 / 流动性</button>
+            <button type="button" data-risk-cat="回撤与策略健康">回撤 / 策略健康</button>
+          </div>
+          <div id="riskList"></div>
+        </div>
+
+        <div class="stack">
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">风险检查范围</div><div class="card-sub">机构风控模型清单</div></div>
+            </div>
+            <div class="stat-list">
+              <div class="stat-line"><label>KYC 适配</label><div class="bar"><i style="width:95%"></i></div><b>95%</b></div>
+              <div class="stat-line"><label>SAA 区间</label><div class="bar"><i style="width:88%"></i></div><b>88%</b></div>
+              <div class="stat-line"><label>TAA 偏离</label><div class="bar"><i style="width:82%"></i></div><b>82%</b></div>
+              <div class="stat-line"><label>集中度/流动性</label><div class="bar"><i style="width:76%"></i></div><b>76%</b></div>
+              <div class="stat-line"><label>回撤/策略健康</label><div class="bar"><i style="width:81%"></i></div><b>81%</b></div>
+            </div>
+            <div class="section-subtext">图中为示意覆盖度，并非真实金融风险评分。</div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">AI 解释与规则处置</div><div class="card-sub">确定性规则优先</div></div>
+            </div>
+            <div class="role-banner">由确定性规则产生告警：KYC 硬约束、SAA 区间带、TAA 偏离阈值、单基金/管理人集中度、流动性与策略评级。AI 可归纳原因，但不得自动修改阈值、评级或跳过投顾审批。</div>
+            <a class="btn btn-primary" href="compliance.html" style="margin-top:15px">进入合规审批流程</a>
+            <div class="footnote">复核动作仅更新演示状态并写入模拟留痕。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 风险事件由演示规则生成，不连接真实风控系统。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

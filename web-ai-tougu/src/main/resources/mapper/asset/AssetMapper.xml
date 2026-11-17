@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.asset.mapper.AssetMapper">
+  <select id="holdings" resultType="com.jason.asset.model.HoldingRow">
+    SELECT h.id,h.fund_id,h.shares,h.cost_amount,f.fund_code,f.name AS fund_name,f.fund_type,f.risk_level,
+      f.latest_nav,f.latest_nav_date AS nav_date,f.purchase_status,f.redeem_status,f.company
+    FROM holding h LEFT JOIN fund f ON f.id=h.fund_id
+    WHERE h.user_id=#{userId} AND h.shares&gt;0 AND h.deleted_at='1970-01-01 00:00:00.000' ORDER BY h.id
+  </select>
+  <select id="snapshots" resultType="com.jason.asset.model.SnapshotRow">
+    SELECT snapshot_date,total_asset FROM asset_snapshot WHERE user_id=#{userId} AND snapshot_date BETWEEN #{from} AND #{to}
+    AND deleted_at='1970-01-01 00:00:00.000' ORDER BY snapshot_date
+  </select>
+  <select id="targets" resultType="com.jason.asset.model.TargetRow">
+    SELECT a.asset_class,a.target_weight FROM client_portfolio c JOIN client_portfolio_allocation a ON a.portfolio_id=c.id
+    WHERE c.customer_user_id=#{userId} AND c.deleted_at='1970-01-01 00:00:00.000' AND a.deleted_at='1970-01-01 00:00:00.000'
+    ORDER BY a.asset_class
+  </select>
+  <insert id="audit">
+    INSERT INTO audit_log(actor_user_id,actor_role,action,object_type,object_id,object_name,detail,trace_id,occurred_at)
+    VALUES(#{userId},1,7,'asset_snapshot',#{userId},'资产报告',JSON_OBJECT('format','PDF'),#{traceId},UTC_TIMESTAMP(3))
+  </insert>
+</mapper>

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>组合管理 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="portfolios">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">STRATEGY · MODEL · CLIENT PORTFOLIOS</div>
+          <h1>投资组合管理</h1>
+          <p>按"策略 → 模型组合 → 客户组合"三级观察 SAA 基准、TAA 偏离、实际持仓与再平衡机会。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-primary" type="button" id="rebalanceButton">
+            <span data-icon="refresh-cw" data-icon-size="15"></span> 生成再平衡建议
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="layers" data-icon-size="15"></span> 在售策略</div>
+          <div class="metric-value">5 个</div>
+          <div class="metric-bottom">另有 1 个观察策略</div>
+          <svg class="metric-spark" data-spark="3,3,4,4,5,5,5,6" data-spark-color="#20ad99"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="briefcase-business" data-icon-size="15"></span> 模型组合</div>
+          <div class="metric-value">16 个</div>
+          <div class="metric-bottom">由策略生成的标准组合</div>
+          <svg class="metric-spark" data-spark="4,4,5,5,6,6,7,7" data-spark-color="#5e98d7"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="users" data-icon-size="15"></span> 客户组合</div>
+          <div class="metric-value">286 个</div>
+          <div class="metric-bottom">引用模型组合并按 KYC 微调</div>
+          <svg class="metric-spark" data-spark="2,3,3,4,5,5,6,8" data-spark-color="#09a89a"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="clipboard-check" data-icon-size="15"></span> 待复核调仓</div>
+          <div class="metric-value">5 份</div>
+          <div class="metric-bottom">SAA / TAA / 基金层</div>
+          <svg class="metric-spark" data-spark="3,4,4,5,5,5,5,6" data-spark-color="#aa8eda"></svg>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:17px">
+        <div class="card-head">
+          <div><div class="card-title">策略层 → 模型组合层</div><div class="card-sub">先选策略，再查看该策略下的模型组合</div></div>
+          <span class="tag blue" id="modelCount">模型组合 1 个</span>
+        </div>
+        <div class="strategy-strip" id="strategyStrip"></div>
+        <div class="table-wrap" style="margin-top:14px">
+          <table>
+            <thead><tr><th>模型组合</th><th>风险</th><th>收益</th><th>波动</th><th>SAA 偏离</th><th>TAA 偏离</th><th>客户数</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody id="modelPortfolioBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid grid-alt" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title" id="modelDetailTitle">模型组合详情</div>
+              <div class="card-sub" id="modelDetailSub">SAA / TAA / 实际权重对比</div>
+            </div>
+            <span class="tag green" id="modelStatusTag">正常</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>大类</th><th>SAA 基准</th><th>TAA 当前</th><th>实际</th><th>实际 vs SAA</th></tr></thead>
+              <tbody id="modelAllocRows"></tbody>
+            </table>
+          </div>
+          <div class="subsection">基金层持仓</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>基金</th><th>类型</th><th>角色</th><th>权重</th><th>流动性</th></tr></thead>
+              <tbody id="modelFundBody"></tbody>
+            </table>
+          </div>
+          <div class="section-subtext">模型组合是策略的标准实例；客户组合在引用后按 KYC 允许的区间做微调。</div>
+        </div>
+
+        <div class="stack">
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">再平衡观察</div><div class="card-sub">最近一次扫描</div></div>
+            </div>
+            <div class="rebal-list" id="modelDeviations"></div>
+            <div class="role-banner" style="margin-top:14px">再平衡建议由 AI 生成草案，须经 KYC/区间带校验、投顾复核与合规审批后方可执行。</div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div><div class="card-title">分层审批规则</div><div class="card-sub">与审批队列一致</div></div>
+            </div>
+            <div class="approval-line"><div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div><span>SAA 半年度 / 年度审议</span></div>
+            <div class="approval-line"><div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div><span>TAA 月度 / 季度调整</span></div>
+            <div class="approval-line"><div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div><span>基金调仓按偏离阈值触发</span></div>
+            <div class="section-subtext">三类调整分别进入对应复核节点并写入留痕。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:17px">
+        <div class="card-head">
+          <div><div class="card-title">客户组合层</div><div class="card-sub">引用当前模型组合的客户组合</div></div>
+          <span class="tag blue" id="clientPortfolioCount">引用客户 1 位</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>客户</th><th>资产</th><th>实际大类权重</th><th>偏离</th><th>状态</th><th>最近复核</th><th>操作</th></tr></thead>
+            <tbody id="clientPortfolioBody"></tbody>
+          </table>
+        </div>
+        <div class="section-subtext">点击"查看"可打开客户组合抽屉，查看 KYC、SAA 与实际权重差异及基金层持仓。</div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 策略、模型组合与客户组合数据均为模拟数据，不构成投资建议。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

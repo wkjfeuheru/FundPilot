@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>TA 回执模拟台 · FundPilot 演示工具</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+  <link rel="stylesheet" href="../assets/demo.css">
+</head>
+<body class="demo-body" data-demo="ta">
+<div class="demo-shell">
+
+  <div class="demo-top">
+    <div class="demo-brand">
+      <div class="brand-logo">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16l5-5 4 2 5-7"/></svg>
+      </div>
+      <div>
+        <strong>FundPilot · TA 回执模拟台</strong>
+        <small>DEMO TOOL · 模拟第三方基金注册登记机构</small>
+      </div>
+    </div>
+    <div class="demo-actions">
+      <span class="demo-badge">非产品功能 · 仅演示</span>
+      <a class="btn btn-sm btn-outline" href="../investor/transactions.html">返回交易记录</a>
+      <a class="btn btn-sm btn-outline" href="../index.html">原型入口</a>
+    </div>
+  </div>
+
+  <div class="demo-banner">
+    <b>角色边界说明：</b>TA（基金注册登记机构）为第三方系统，客户与投顾均不能代替 TA 确认。本页面仅用于原型演示与测试：读取本会话的待登记交易，模拟 TA 回执（T+1、按 T 日净值），并将结果写回客户持仓与现金账户。客户侧只读展示回执结果。
+  </div>
+
+  <div class="demo-metrics">
+    <div class="card metric">
+      <div class="metric-label">待登记确认</div>
+      <div class="metric-value" id="simPending">0 笔</div>
+      <div class="metric-bottom">等待 TA 回执</div>
+    </div>
+    <div class="card metric">
+      <div class="metric-label">现金余额</div>
+      <div class="metric-value" id="simCash">¥0</div>
+      <div class="metric-bottom">客户资金账户</div>
+    </div>
+    <div class="card metric">
+      <div class="metric-label">冻结待登记申购</div>
+      <div class="metric-value" id="simFrozen">¥0</div>
+      <div class="metric-bottom">待 TA 确认后扣减</div>
+    </div>
+    <div class="card metric">
+      <div class="metric-label">可用现金</div>
+      <div class="metric-value" id="simAvailable">¥0</div>
+      <div class="metric-bottom">余额 − 冻结</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-head">
+      <div>
+        <div class="card-title">待登记交易</div>
+        <div class="card-sub">逐笔提交 TA 回执；演示支持确认成功与失败注入</div>
+      </div>
+      <button class="btn btn-primary btn-sm" type="button" id="batchSuccess">全部确认成功</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>交易</th><th>基金 / 组合</th><th>申请金额 / 份额</th><th>提交时间</th><th>确认要求</th><th>操作</th></tr></thead>
+        <tbody id="taPendingBody"></tbody>
+      </table>
+    </div>
+    <div class="section-subtext">TA 回执仅在客户侧展示；模拟台不修改客户风险等级或交易申请内容。</div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-head">
+      <div>
+        <div class="card-title">最近 TA 回执</div>
+        <div class="card-sub">确认编号、确认日期、净值、份额/金额、手续费与失败原因</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>交易</th><th>基金 / 组合</th><th>TA 状态</th><th>确认编号</th><th>确认日期</th><th>确认结果</th><th>费用</th></tr></thead>
+        <tbody id="taHistoryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footnote">FundPilot 概念原型 · 演示工具不连接真实 TA、基金销售机构或资金系统；所有回执、净值与费用均为模拟数据。</div>
+</div>
+
+<div id="drawerRoot"></div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+<script src="../assets/ta-simulator.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>登录 · FundPilot</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+  <link rel="stylesheet" href="../assets/auth.css">
+</head>
+<body class="auth-body" data-auth="login">
+<div class="auth-shell">
+
+  <aside class="auth-visual">
+    <div class="auth-brand">
+      <div class="brand-logo">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16l5-5 4 2 5-7"/></svg>
+      </div>
+      <div>
+        <strong>FundPilot</strong>
+        <small>INTELLIGENT WEALTH</small>
+      </div>
+    </div>
+
+    <div class="auth-hero">
+      <div class="auth-kicker">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg>
+        AI WEALTH COPILOT
+      </div>
+      <h1 id="heroTitle">让每一笔投资，都有清晰的依据</h1>
+      <p id="heroDesc">从资产总览到智能配置，AI 解释每一个配置理由，所有建议由你自主确认。</p>
+    </div>
+
+    <div class="auth-points">
+      <div class="auth-point">
+        <div class="auth-point-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12A9 9 0 1 1 12 3v9z"/><path d="M12 3a9 9 0 0 1 9 9h-9z"/></svg>
+        </div>
+        <div><b id="pointTitle1">组合诊断与配置解释</b><span id="pointDesc1">结合风险画像与持仓，用自然语言说明专业概念。</span></div>
+      </div>
+      <div class="auth-point">
+        <div class="auth-point-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div><b id="pointTitle2">适当性前置校验</b><span id="pointDesc2">产品风险等级与你的测评结果匹配后才给出建议。</span></div>
+      </div>
+      <div class="auth-point">
+        <div class="auth-point-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div><b id="pointTitle3">自主决策、不自动交易</b><span id="pointDesc3">所有调仓与申购均为模拟草案，需你主动确认。</span></div>
+      </div>
+    </div>
+
+    <div class="auth-preview">
+      <div class="auth-preview-head">
+        <b id="previewTitle">AI 组合健康检查 · 本周</b>
+        <span>SIMULATED DATA</span>
+      </div>
+      <div class="auth-preview-grid">
+        <div><label id="statLabel1">总资产</label><strong id="statValue1">¥1,286,420</strong></div>
+        <div><label id="statLabel2">组合风险</label><strong id="statValue2">R3 平衡型</strong></div>
+        <div><label id="statLabel3">待确认</label><strong id="statValue3">1 项</strong></div>
+      </div>
+      <div class="auth-preview-foot" id="previewFoot">✓ 风险模型扫描完成 · 数据为模拟演示</div>
+    </div>
+  </aside>
+
+  <section class="auth-form-wrap">
+    <a class="auth-back" href="../index.html">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      返回原型入口
+    </a>
+
+    <div class="auth-role" role="tablist" aria-label="选择登录端">
+      <button type="button" data-role="investor" class="active">投资者</button>
+      <button type="button" data-role="advisor">投顾 PRO</button>
+    </div>
+
+    <h2 class="auth-title">欢迎回来</h2>
+    <p class="auth-sub">登录 FundPilot，继续查看你的资产与 AI 研究结论。</p>
+
+    <form class="auth-form" id="loginForm" novalidate>
+      <div class="field">
+        <label for="account">手机号 / 账号</label>
+        <input id="account" type="text" autocomplete="username" placeholder="请输入手机号或客户账号">
+        <div class="auth-error"></div>
+      </div>
+
+      <div class="field">
+        <label for="password">密码 <a href="#" id="forgotPassword">忘记密码？</a></label>
+        <div class="input-wrap with-action">
+          <input id="password" type="password" autocomplete="current-password" placeholder="请输入登录密码">
+          <button class="input-action" type="button" data-toggle-password="password" aria-label="显示密码">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="2.6"/></svg>
+          </button>
+        </div>
+        <div class="auth-error"></div>
+      </div>
+
+      <div class="auth-row">
+        <label class="auth-check"><input type="checkbox" checked> 保持登录状态（演示）</label>
+        <span class="tag">● 演示环境</span>
+      </div>
+
+      <button class="btn btn-primary auth-submit" type="submit" id="loginSubmit">登录</button>
+
+      <div class="auth-divider">或使用演示账号</div>
+
+      <div class="auth-demo">
+        <div>
+          <b>演示账号</b>
+          <span id="demoName">陈女士 · 平衡型投资者 R3</span>
+        </div>
+        <button class="btn btn-sm btn-outline" type="button" id="demoLogin">一键登录</button>
+      </div>
+    </form>
+
+    <div class="auth-foot">
+      <div class="auth-switch">还没有账号？<a href="register.html?role=investor" id="switchAuth">立即注册</a></div>
+      <div class="auth-legal">
+        登录即表示你已阅读并同意 <a href="#" data-agreement>服务协议</a> 与 <a href="#" data-agreement>隐私政策</a>。<br>
+        本页面为产品原型演示，不连接真实身份认证、短信或资金系统。
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="../assets/auth.js"></script>
+</body>
+</html>

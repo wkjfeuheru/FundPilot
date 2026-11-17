@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>投顾报告 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="reports">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">ADVISORY REPORT CENTER</div>
+          <h1>AI 投顾报告中心</h1>
+          <p>结合客户画像、持仓、归因和风险数据生成可审核的客户报告草案。</p>
+        </div>
+        <div class="welcome-ctl">
+          <button class="btn btn-outline" type="button" data-chat="帮我生成客户沟通报告">
+            <span data-icon="sparkles" data-icon-size="15"></span> 与 AI 讨论报告
+          </button>
+          <button class="btn btn-primary" type="button" data-generate-report>
+            <span data-icon="file-text" data-icon-size="15"></span> 生成报告
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-sidebar">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">报告配置</div><div class="card-sub">选择报告类型与关联客户后生成草案</div></div>
+          </div>
+
+          <label class="form-label">报告类型</label>
+          <div class="risk-tiers" id="reportTypeGroup" style="margin-top:0">
+            <button type="button" data-report-type="客户配置建议书" class="active">客户配置建议书</button>
+            <button type="button" data-report-type="组合诊断报告">组合诊断报告</button>
+            <button type="button" data-report-type="季度服务报告">季度服务报告</button>
+          </div>
+
+          <label class="form-label" for="reportClientSelect">关联客户</label>
+          <select class="select" id="reportClientSelect" style="width:100%"></select>
+
+          <label class="form-label" for="reportStrategySelect">关联策略</label>
+          <select class="select" id="reportStrategySelect" style="width:100%"></select>
+          <div class="hint small-muted" style="margin-top:7px">切换报告类型、关联客户或策略会作废已生成状态，回到"模板预览"。</div>
+
+          <label class="form-label">报告结构</label>
+          <div class="steps">
+            <div class="step"><span data-icon="target" data-icon-size="14"></span> 客户投资目标</div>
+            <div class="step"><span data-icon="layers" data-icon-size="14"></span> 策略与配置框架</div>
+            <div class="step"><span data-icon="chart-no-axes-combined" data-icon-size="14"></span> 组合表现</div>
+            <div class="step"><span data-icon="shield-check" data-icon-size="14"></span> 风险与适当性</div>
+            <div class="step"><span data-icon="sparkles" data-icon-size="14"></span> 建议与免责声明</div>
+          </div>
+
+          <div class="summary-box" style="margin-top:18px">
+            <div class="summary-top"><span data-icon="sparkles" data-icon-size="16"></span> AI 生成原则</div>
+            <p>引用有来源的数据和可复现的量化指标，输出草案与待核验项；对外使用前必须经过投顾复核和合规审核。</p>
+          </div>
+
+          <button class="btn btn-primary" type="button" data-generate-report>生成报告草案</button>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">生成进度跟踪</div><div class="card-sub">生成前后状态联动</div></div>
+          </div>
+          <div class="approval-line">
+            <div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div>
+            <span>客户信息与权限验证 <small>· 系统自动</small></span>
+          </div>
+          <div class="approval-line">
+            <div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div>
+            <span>数据与来源校验（模拟） <small>· 系统自动</small></span>
+          </div>
+          <div class="approval-line" id="draftStep">
+            <div class="circle" style="background:#fff7e8;color:#cf9633"><span data-icon="clock" data-icon-size="14"></span></div>
+            <span>生成报告初稿 <small>· 待生成</small></span>
+          </div>
+          <div class="approval-line">
+            <div class="circle" style="background:#fff7e8;color:#cf9633"><span data-icon="clock" data-icon-size="14"></span></div>
+            <span>投顾复核 / 合规审批 <small>· 人工环节</small></span>
+          </div>
+          <div class="role-banner" style="margin-top:16px">当前为产品原型，不含真实报告生成模型与审签系统。</div>
+          <div class="subsection">内容合规约束</div>
+          <div class="role-banner">报告须通过投顾复核与合规审批后方可进入客户沟通环节；AI 初稿不具备对外效力。</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:17px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">报告内容预览</div>
+            <div class="card-sub" id="reportPreviewSub">模板预览 · 尚未生成报告正文</div>
+          </div>
+          <div class="inline-actions">
+            <span class="tag" id="reportGeneratedTag" hidden>已生成</span>
+            <span class="tag" id="reportStatus">模板预览</span>
+            <a class="mini-link" href="compliance.html">查看审批 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+          </div>
+        </div>
+
+        <div class="report-preview">
+          <div class="eyebrow" style="margin-bottom:14px">FUND PILOT · ADVISORY RESEARCH / DRAFT</div>
+          <h2 id="reportTypeTitle">客户配置建议书</h2>
+          <div class="report-rule"></div>
+          <div class="small-muted" style="line-height:1.9">
+            <span id="reportClientText">服务对象：陈悦</span> ｜ 报告日期：2026/11/13 ｜ 状态：<span id="reportStatusInline">模板预览</span>
+          </div>
+          <h3>一、投资目标及适当性</h3>
+          <p>客户风险画像为稳健型 R2，投资目标为长期稳健增值，计划期限 4 年、流动性需求中等。当前策略与产品风险等级匹配情况已完成模拟校验，仍需投顾复核数据来源与有效期。</p>
+          <h3>二、策略选择与配置框架</h3>
+          <p>关联策略：<b id="reportStrategyName">稳健增值 03 号</b>。该策略通过 KYC 硬约束与加权评分入选；SAA 定义长期基准与区间带，TAA 在区间带内做战术偏离。<span id="reportFrameworkText"></span>最终组合由公募基金池按风格、费率、流动性与集中度约束构建，单基金不超过 25%。</p>
+          <h3>三、组合表现与风险摘要</h3>
+          <p>模拟组合权益仓位约 21%，债券仓位约 64%，货币约 10%，黄金约 5%。需关注 SAA 区间边界、TAA 偏离阈值、单只基金集中度及策略评级变化。</p>
+          <h3>四、建议与复核事项</h3>
+          <ul>
+            <li>复核策略与客户 KYC 的适配性及测评有效期。</li>
+            <li>核对 SAA/TAA 偏离是否在区间带与内部阈值内。</li>
+            <li>核对单只基金与管理人集中度，补充风险提示。</li>
+          </ul>
+          <div class="footnote" style="margin-top:20px">本报告为 AI 生成的演示草案，所引数据均为模拟数据，不构成投资建议；对外使用前须经投顾复核与合规审批。</div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 报告内容与客户信息均为演示数据，不构成投资建议。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

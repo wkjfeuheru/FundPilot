@@ -1,0 +1,5 @@
+# Local development only. Other profiles must supply their own datasource URL/TLS policy.
+# DB_URL replaces the complete URL, including its timeout and timezone parameters.
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/tougu_platform?characterEncoding=UTF-8&connectionTimeZone=UTC&connectTimeout=5000&socketTimeout=30000&sslMode=DISABLED&allowPublicKeyRetrieval=true}

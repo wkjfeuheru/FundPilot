@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>审批与合规 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="compliance">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">COMPLIANCE WORKBENCH</div>
+          <h1>审批与合规工作台</h1>
+          <p>通过规则检查、人工复核和审计记录管控 AI 建议与投顾操作。</p>
+        </div>
+        <div class="welcome-ctl">
+          <a class="btn btn-outline" href="reports.html"><span data-icon="file-text" data-icon-size="15"></span> 新建客户报告</a>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="clipboard-check" data-icon-size="15"></span> 待审批方案</div>
+          <div class="metric-value">7 份</div>
+          <div class="metric-bottom"><span class="negative">2 份高优先级</span></div>
+          <svg class="metric-spark" data-spark="4,5,4,6,5,6,7,7" data-spark-color="#0ea48b"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="file-text" data-icon-size="15"></span> 待复核报告</div>
+          <div class="metric-value">3 份</div>
+          <div class="metric-bottom">AI 仅负责草案</div>
+          <svg class="metric-spark" data-spark="3,3,4,4,5,4,4,3" data-spark-color="#5e98d7"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="shield-check" data-icon-size="15"></span> 适当性校验</div>
+          <div class="metric-value">98.6%</div>
+          <div class="metric-bottom">覆盖客户比例</div>
+          <svg class="metric-spark" data-spark="6,7,7,8,8,9,9,10" data-spark-color="#09a89a"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="clock" data-icon-size="15"></span> 本周审核完成</div>
+          <div class="metric-value">24 项</div>
+          <div class="metric-bottom">可追溯日志</div>
+          <svg class="metric-spark" data-spark="3,4,5,5,6,7,7,8" data-spark-color="#aa8eda"></svg>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:17px">
+        <div class="card-head">
+          <div><div class="card-title">审批队列</div><div class="card-sub">按 SAA / TAA / 基金 / 客户分层复核；通过后按钮禁用，不可重复审批</div></div>
+          <span class="tag gold" id="approvalPendingCount">待复核 4 项</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>事项</th><th>对象</th><th>层级</th><th>规则校验</th><th>审批状态</th><th>操作</th></tr></thead>
+            <tbody id="approvalBody"></tbody>
+          </table>
+        </div>
+        <div class="section-subtext">分层规则：SAA 半年度 / 年度审议，TAA 月度 / 季度调整，基金调仓按偏离阈值触发；审批动作仅更新演示状态并写入模拟留痕。</div>
+      </div>
+
+      <div class="grid grid-two" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">AI 建议审批链路</div><div class="card-sub">前两步系统自动，后三步人工</div></div>
+          </div>
+          <div class="approval-line">
+            <div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div>
+            <span>① AI 生成建议草案 <small>· 已完成</small></span>
+          </div>
+          <div class="approval-line">
+            <div class="circle"><span data-icon="circle-check" data-icon-size="14"></span></div>
+            <span>② KYC / SAA / TAA 规则校验 <small>· 已完成</small></span>
+          </div>
+          <div class="approval-line">
+            <div class="circle" style="background:#fff7e8;color:#cf9633"><span data-icon="clock" data-icon-size="14"></span></div>
+            <span>③ 投顾人工复核 <small>· 进行中</small></span>
+          </div>
+          <div class="approval-line">
+            <div class="circle" style="background:#fff7e8;color:#cf9633"><span data-icon="clock" data-icon-size="14"></span></div>
+            <span>④ 合规审批与客户确认 <small>· 待处理</small></span>
+          </div>
+          <div class="approval-line">
+            <div class="circle" style="background:#f1f4f8;color:#93a1b3"><span data-icon="lock" data-icon-size="14"></span></div>
+            <span>⑤ 留痕与模拟执行 <small>· 未开始</small></span>
+          </div>
+          <div class="section-subtext">链路状态为固定演示：AI 不得跳过任一人工节点。</div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">生产要求与边界</div><div class="card-sub">合规基座说明</div></div>
+          </div>
+          <div class="role-banner">生产系统需由真实身份权限、合规规则服务和不可篡改审计记录实现；原型不提供规则编辑与审计导出能力。</div>
+          <div class="subsection">投顾权限边界</div>
+          <div class="profile-item"><span>客户数据查看</span><strong>仅本投顾名下客户</strong></div>
+          <div class="profile-item"><span>AI 诊断 / 方案 / 报告</span><strong>仅生成草案</strong></div>
+          <div class="profile-item"><span>风险事件复核</span><strong>可标记已复核</strong></div>
+          <div class="profile-item"><span>风险规则配置</span><span class="tag red">无权限</span></div>
+          <div class="profile-item"><span>策略库上架 / 评级变更</span><span class="tag red">无权限</span></div>
+          <div class="profile-item"><span>真实交易指令</span><span class="tag red">不提供</span></div>
+          <div class="footnote">以上权限边界为原型呈现，生产环境需由统一身份与权限服务强制执行。</div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 审批记录与合规指标均为模拟数据，不构成任何真实审批结论。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>

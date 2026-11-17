@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.trade.mapper.AutoInvestMapper">
+  <select id="plan" resultType="com.jason.trade.model.AutoInvestRow">
+    SELECT id,user_id,monthly_amount,execute_day,status,created_at,updated_at FROM auto_invest_plan
+    WHERE user_id=#{userId} AND deleted_at='1970-01-01 00:00:00.000'
+  </select>
+  <select id="funds" resultType="com.jason.trade.model.AutoInvestFundRow">
+    SELECT p.fund_id,p.monthly_amount,COALESCE(f.fund_code,'') AS fund_code,COALESCE(f.name,'已下架基金') AS fund_name
+    FROM auto_invest_plan_fund p LEFT JOIN fund f ON f.id=p.fund_id WHERE p.plan_id=#{planId} AND p.deleted_at='1970-01-01 00:00:00.000' ORDER BY p.fund_id
+  </select>
+  <select id="countFunds" resultType="int">
+    SELECT COUNT(*) FROM fund WHERE deleted_at='1970-01-01 00:00:00.000' AND id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </select>
+  <insert id="upsert">
+    INSERT INTO auto_invest_plan(user_id,monthly_amount,execute_day) VALUES(#{userId},#{r.monthlyAmount},#{r.executeDay})
+    ON DUPLICATE KEY UPDATE monthly_amount=#{r.monthlyAmount},execute_day=#{r.executeDay},deleted_at='1970-01-01 00:00:00.000',updated_at=UTC_TIMESTAMP(3)
+  </insert>
+  <update id="retireFunds">UPDATE auto_invest_plan_fund SET deleted_at=UTC_TIMESTAMP(3) WHERE plan_id=#{planId} AND deleted_at='1970-01-01 00:00:00.000'</update>
+  <insert id="replaceFunds">
+    INSERT INTO auto_invest_plan_fund(plan_id,fund_id,monthly_amount) VALUES
+    <foreach collection="funds" item="f" separator=",">(#{planId},#{f.fundId},#{f.monthlyAmount})</foreach>
+    ON DUPLICATE KEY UPDATE monthly_amount=VALUES(monthly_amount),deleted_at='1970-01-01 00:00:00.000',updated_at=UTC_TIMESTAMP(3)
+  </insert>
+  <insert id="audit">
+    INSERT INTO audit_log(actor_user_id,actor_role,action,object_type,object_id,object_name,detail,trace_id,occurred_at)
+    VALUES(#{userId},1,8,'auto_invest_plan',#{planId},'定投计划',CAST(#{detail} AS JSON),#{traceId},UTC_TIMESTAMP(3))
+  </insert>
+</mapper>

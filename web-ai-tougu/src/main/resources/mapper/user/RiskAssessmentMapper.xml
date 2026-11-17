@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jason.user.mapper.RiskAssessmentMapper">
+  <select id="active" resultType="com.jason.user.model.QuestionnaireRow">
+    SELECT id,version,title,question_count FROM risk_questionnaire
+    WHERE status=1 AND deleted_at='1970-01-01 00:00:00.000' ORDER BY created_at DESC,id DESC LIMIT 1
+  </select>
+  <select id="enabled" resultType="com.jason.user.model.QuestionnaireRow">
+    SELECT id,version,title,question_count FROM risk_questionnaire
+    WHERE id=#{id} AND status=1 AND deleted_at='1970-01-01 00:00:00.000' FOR SHARE
+  </select>
+  <select id="questions" resultType="com.jason.user.model.QuestionRow">
+    SELECT id,sort_no,title,options FROM risk_question WHERE questionnaire_id=#{id}
+    AND deleted_at='1970-01-01 00:00:00.000' ORDER BY sort_no ASC FOR SHARE
+  </select>
+  <select id="lockUser" resultType="long">
+    SELECT id FROM user WHERE id=#{id} AND role=1 AND status=1 AND deleted_at='1970-01-01 00:00:00.000' FOR UPDATE
+  </select>
+  <insert id="insertAssessment" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO risk_assessment(user_id,questionnaire_id,answers,total_score,risk_level,evaluated_by_user_id,evaluated_at,valid_until)
+    VALUES (#{userId},#{questionnaireId},#{answers},#{totalScore},#{riskLevel},0,#{evaluatedAt},#{validUntil})
+  </insert>
+  <insert id="upsertProfile">
+    INSERT INTO risk_profile(user_id,risk_level,evaluated_at,valid_until) VALUES (#{userId},#{riskLevel},#{evaluatedAt},#{validUntil})
+    ON DUPLICATE KEY UPDATE risk_level=#{riskLevel},evaluated_at=#{evaluatedAt},valid_until=#{validUntil},deleted_at='1970-01-01 00:00:00.000'
+  </insert>
+  <insert id="audit">
+    INSERT INTO audit_log(actor_user_id,actor_role,action,object_type,object_id,object_name,detail,trace_id,occurred_at)
+    VALUES (#{row.userId},1,8,'risk_assessment',#{row.id},CAST(#{row.id} AS CHAR),
+      JSON_OBJECT('questionnaireId',#{row.questionnaireId},'riskLevel',#{row.riskLevel},'totalScore',#{row.totalScore}),#{traceId},#{row.evaluatedAt})
+  </insert>
+  <insert id="reserve">
+    INSERT INTO idempotency_key(idem_key,user_id,request_path,request_digest,expires_at) VALUES (#{key},#{userId},#{path},#{digest},#{expires})
+  </insert>
+  <select id="reservation" resultType="com.jason.user.model.IdempotencyRow">
+    SELECT user_id,request_path,request_digest,response_digest FROM idempotency_key WHERE idem_key=#{key}
+  </select>
+  <update id="complete">UPDATE idempotency_key SET response_digest=#{digest} WHERE idem_key=#{key}</update>
+</mapper>

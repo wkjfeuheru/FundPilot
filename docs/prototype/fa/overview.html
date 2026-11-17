@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c2935">
+  <title>工作台总览 · FundPilot PRO</title>
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <link rel="stylesheet" href="../assets/base.css">
+  <link rel="stylesheet" href="../assets/components.css">
+</head>
+<body class="advisor" data-mode="advisor" data-page="overview">
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main">
+    <div id="topbar"></div>
+    <div class="content">
+
+      <div class="welcome">
+        <div>
+          <div class="eyebrow">FINANCIAL ADVISORY WORKSPACE</div>
+          <h1>晚上好，林顾问 👋</h1>
+          <p>你目前负责 286 位客户。今日 AI 已完成资产扫描，发现 6 项需要复核的关注事项。</p>
+        </div>
+        <div class="welcome-ctl">
+          <a class="btn btn-outline" href="compliance.html"><span data-icon="calendar" data-icon-size="15"></span> 查看今日任务</a>
+        </div>
+      </div>
+
+      <div class="ai-hero">
+        <div class="hero-content">
+          <div class="hero-kicker"><span data-icon="sparkles" data-icon-size="16"></span> AI ADVISOR COPILOT · DAILY BRIEF</div>
+          <h2>让投顾决策更快、更有依据</h2>
+          <p>已扫描 286 位演示客户、8 个在售策略和 16 个模型组合。重点关注 KYC 与策略适配、SAA 区间越界、TAA 偏离及基金集中度；AI 可生成处理建议，不会自动下单。</p>
+          <div class="hero-cta">
+            <button class="btn btn-white" type="button" data-chat="帮我总结今日客户风险和待办事项">查看 AI 今日工作简报 <span data-icon="arrow-up-right" data-icon-size="15"></span></button>
+            <a class="btn btn-outline" href="risks.html" style="background:#ffffff18;border-color:#ffffff5c;color:#fff">进入风险工作台</a>
+          </div>
+        </div>
+        <div class="hero-illustration">
+          <div class="orb"><span data-icon="bot" data-icon-size="61"></span></div>
+          <div class="hero-floating">✓ 286 位客户扫描完成</div>
+        </div>
+      </div>
+
+      <div class="grid grid-four">
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="briefcase-business" data-icon-size="15"></span> 管理资产规模（AUM）</div>
+          <div class="metric-value">¥2.36亿</div>
+          <div class="metric-bottom"><span class="positive">+8.6%</span> 半年增长</div>
+          <svg class="metric-spark" data-spark="2,3,4,4,6,5,8,9" data-spark-color="#06aa9b"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="users" data-icon-size="15"></span> 在管客户</div>
+          <div class="metric-value">286 人</div>
+          <div class="metric-bottom">本月新增 12 人</div>
+          <svg class="metric-spark" data-spark="2,3,3,4,5,5,6,8" data-spark-color="#5e98d7"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="shield-alert" data-icon-size="15"></span> 待处理风险事项</div>
+          <div class="metric-value">6 项</div>
+          <div class="metric-bottom"><span class="negative">3 项高优先级</span></div>
+          <svg class="metric-spark" data-spark="2,5,3,7,5,6,7,8" data-spark-color="#eaa25e"></svg>
+        </div>
+        <div class="card metric">
+          <div class="metric-label"><span data-icon="clipboard-check" data-icon-size="15"></span> 待审批配置方案</div>
+          <div class="metric-value">7 份</div>
+          <div class="metric-bottom">需合规复核与确认</div>
+          <svg class="metric-spark" data-spark="4,4,4,4,6,5,6,6" data-spark-color="#7080cf"></svg>
+        </div>
+      </div>
+
+      <div class="grid grid-alt" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">管理资产趋势</div><div class="card-sub">近 6 个月模拟规模变化</div></div>
+            <a class="mini-link" href="portfolios.html">查看组合 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+            <b style="font-size:23px;color:#0aab97;letter-spacing:-.6px">¥2.36亿</b>
+            <span class="tag green">+8.6% 半年</span>
+          </div>
+          <div class="chart-wrap" id="advisorTrendChart"></div>
+          <div class="chart-labels"><span>2026/06</span><span>07</span><span>08</span><span>09</span><span>10</span><span>11</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">风险事项分布</div><div class="card-sub">按严重程度区分</div></div>
+            <a class="mini-link" href="risks.html">风险详情 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+          </div>
+          <div class="allocation">
+            <div class="donut" data-donut="50:#e86b7d,50:#efb767,0:#39bcaa">
+              <div class="donut-inner"><strong>6 项</strong><small>待关注</small></div>
+            </div>
+            <div class="legend">
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#e86b7d"></i>高风险</span><strong>3</strong></div>
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#efb767"></i>中风险</span><strong>3</strong></div>
+              <div class="legend-row"><span class="legend-left"><i class="dot" style="background:#39bcaa"></i>低风险</span><strong>0</strong></div>
+            </div>
+          </div>
+          <div class="role-banner" style="margin-top:18px">风险预警来自演示规则引擎。建议遵循"识别 → 人工复核 → 审批 → 执行留痕"的流程。</div>
+        </div>
+      </div>
+
+      <div class="grid grid-alt" style="margin-top:17px">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">重点客户关注清单</div><div class="card-sub">根据风险、配置偏离和沟通状态排序</div></div>
+            <a class="mini-link" href="clients.html">全部客户 <span data-icon="chevron-right" data-icon-size="13"></span></a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>客户 / ID</th><th>风险画像</th><th>管理资产</th><th>区间收益</th><th>最新状态</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="fund-name"><div class="avatar" style="height:29px;width:29px;font-size:11px">陈</div><div><strong>陈悦</strong><div class="small-muted" style="margin-top:4px">C1024</div></div></div></td>
+                  <td>稳健型 R2</td><td><strong>¥286万</strong></td><td class="positive">+3.8%</td>
+                  <td><span class="tag red">待沟通</span></td>
+                  <td><button class="mini-link" type="button" data-client="C1024">查看 <span data-icon="chevron-right" data-icon-size="13"></span></button></td>
+                </tr>
+                <tr>
+                  <td><div class="fund-name"><div class="avatar" style="height:29px;width:29px;font-size:11px">赵</div><div><strong>赵明远</strong><div class="small-muted" style="margin-top:4px">C1158</div></div></div></td>
+                  <td>平衡型 R3</td><td><strong>¥518万</strong></td><td class="positive">+6.2%</td>
+                  <td><span class="tag red">待调仓</span></td>
+                  <td><button class="mini-link" type="button" data-client="C1158">查看 <span data-icon="chevron-right" data-icon-size="13"></span></button></td>
+                </tr>
+                <tr>
+                  <td><div class="fund-name"><div class="avatar" style="height:29px;width:29px;font-size:11px">李</div><div><strong>李婧</strong><div class="small-muted" style="margin-top:4px">C1207</div></div></div></td>
+                  <td>进取型 R4</td><td><strong>¥132万</strong></td><td class="positive">+9.1%</td>
+                  <td><span class="tag blue">跟进中</span></td>
+                  <td><button class="mini-link" type="button" data-client="C1207">查看 <span data-icon="chevron-right" data-icon-size="13"></span></button></td>
+                </tr>
+                <tr>
+                  <td><div class="fund-name"><div class="avatar" style="height:29px;width:29px;font-size:11px">周</div><div><strong>周建国</strong><div class="small-muted" style="margin-top:4px">C1342</div></div></div></td>
+                  <td>稳健型 R2</td><td><strong>¥845万</strong></td><td class="positive">+4.2%</td>
+                  <td><span class="tag blue">正常</span></td>
+                  <td><button class="mini-link" type="button" data-client="C1342">查看 <span data-icon="chevron-right" data-icon-size="13"></span></button></td>
+                </tr>
+                <tr>
+                  <td><div class="fund-name"><div class="avatar" style="height:29px;width:29px;font-size:11px">王</div><div><strong>王晓岚</strong><div class="small-muted" style="margin-top:4px">C1490</div></div></div></td>
+                  <td>平衡型 R3</td><td><strong>¥362万</strong></td><td class="positive">+5.8%</td>
+                  <td><span class="tag blue">待沟通</span></td>
+                  <td><button class="mini-link" type="button" data-client="C1490">查看 <span data-icon="chevron-right" data-icon-size="13"></span></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">AI 今日建议</div><div class="card-sub">已按影响程度排序</div></div>
+            <button class="mini-link" type="button" data-chat="帮我总结今日客户风险和待办事项">与 AI 讨论 <span data-icon="chevron-right" data-icon-size="13"></span></button>
+          </div>
+          <div class="insight">
+            <div class="insight-icon" style="background:#fff1f3;color:#dd6f7a"><span data-icon="shield-alert" data-icon-size="18"></span></div>
+            <div class="insight-main">
+              <div class="insight-title">优先复核陈悦的策略风险等级不匹配</div>
+              <div class="insight-desc">客户 R2 引用了 R3 策略，建议重新匹配策略或补充适当性确认。</div>
+              <span class="tag red">优先级高</span>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-icon"><span data-icon="pie-chart" data-icon-size="18"></span></div>
+            <div class="insight-main">
+              <div class="insight-title">为赵明远准备 SAA 再平衡草案</div>
+              <div class="insight-desc">实际权益 48% 越过 SAA 区间带 40%–45%，可生成草案并评估 TAA 调整。</div>
+              <span class="tag blue">待生成方案</span>
+            </div>
+          </div>
+          <div class="insight">
+            <div class="insight-icon" style="background:#e9f8f5;color:#05a793"><span data-icon="file-text" data-icon-size="18"></span></div>
+            <div class="insight-main">
+              <div class="insight-title">本周 7 份客户报告需要复核</div>
+              <div class="insight-desc">AI 可协助形成初稿，数据、结论和对外发送仍须审批。</div>
+              <span class="tag gold">本周待办</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footnote">FundPilot PRO 概念原型 · 当前页面为模拟业务数据，客户信息、资产规模与 AI 输出仅用于产品演示，不构成投资建议。</div>
+    </div>
+  </main>
+</div>
+<script src="../assets/data.js"></script>
+<script src="../assets/app.js"></script>
+</body>
+</html>
