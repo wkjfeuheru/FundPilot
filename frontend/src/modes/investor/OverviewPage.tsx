@@ -26,7 +26,7 @@ function OverviewContent() {
     {state.overview.status === 'loading' && <p role="status">正在加载资产总览…</p>}
     {state.overview.status === 'error' && <section className={styles.panel} role="alert"><p>{state.overview.message}</p><button className={styles.button} onClick={state.reload}>重试资产总览</button></section>}
     {a && <section className={styles.metrics} aria-label="资产指标">
-      <div className={styles.metric}><span>总资产（元）</span><strong>{formatMoney(a.totalAsset)}</strong><small>持仓 + 现金余额（包含冻结资金）</small></div>
+      <div className={styles.metric}><span>总资产（元）</span><strong>{formatMoney(a.totalAsset)}</strong><small>持仓 + 现金余额（包含冻结资金）</small><small>可用现金 ¥{formatMoney(a.availableCash)}</small></div>
       <div className={styles.metric}><span>累计收益（元）</span><strong>{formatMoney(a.cumulativePnl)}</strong><small>当前持仓收益率 {a.cumulativePnlRate}%</small></div>
       <div className={styles.metric}><span>近30日资产变化（元）</span><strong>{formatMoney(a.last30dPnl)}</strong><small>快照差额；不足两条时显示0</small></div>
       <div className={styles.metric}><span>组合风险等级</span><strong className={styles.risk}>{a.portfolioRiskLevelLabel}</strong><small>{a.matchesProfile ? '匹配客户画像 · 沿用测评评级' : '暂无有效画像，建议完成测评'}</small><Link to="/investor/profile">查看风险画像 →</Link></div>
@@ -38,13 +38,13 @@ function OverviewContent() {
         {state.trend.status === 'ready' && <AssetTrendChart data={state.trend.data} />}
         <p className={styles.source}>基于已有日快照，未剔除现金流影响。比较基准为演示配置，非真实市场指数；零基数时变化率显示0。</p>
       </section>
-      <section className={styles.panel}><h2>资产配置</h2>{a ? <AssetAllocation items={a.allocation} /> : <p className={styles.source}>配置数据随资产总览加载。</p>}</section>
+      <section className={styles.panel}><div className={styles.sectionHeader}><h2>资产配置</h2><Link to="/investor/plan">查看配置详情 →</Link></div>{a ? <AssetAllocation items={a.allocation} /> : <p className={styles.source}>配置数据随资产总览加载。</p>}</section>
     </div>
     {a && <>
       <section className={styles.panel}><div className={styles.sectionHeader}><h2>主要持仓</h2><Link to="/investor/holdings">查看全部 →</Link></div>
         {a.topHoldings.length ? <div className={styles.holdings}>{a.topHoldings.map(h => <button key={h.id} className={styles.holding} onClick={() => change('fundId', String(h.fundId))}><span><b>{h.fundName}</b><small>{h.fundCode} · {h.riskLevel} · 净值日 {h.navDate}</small></span><span><b>¥{formatMoney(h.marketValue)}</b><small>占总资产 {h.shareRatio}%</small></span><span><b>{h.pnlRate}%</b><small>持仓收益率 ↗</small></span></button>)}</div> : <div className={styles.empty}>暂无基金持仓。<Link to="/investor/funds">浏览基金超市</Link></div>}
       </section>
-      <section aria-label="组合规则洞察"><div className={styles.sectionHeader}><h2>组合规则洞察</h2><small>基于账户数据生成</small></div><div className={styles.insights}>{a.insights.map((i, index) => <article className={styles.panel} key={`${i.type}-${index}`}><span className={styles.tag} data-level={i.tagLevel}>{i.tag}</span><h3>{i.title}</h3><p>{i.description}</p></article>)}</div></section>
+      <section aria-label="组合规则洞察"><div className={styles.sectionHeader}><h2>组合规则洞察</h2><button className={styles.textButton} onClick={() => shell.openAi('请结合当前组合规则洞察，说明还需关注哪些风险')}>更多建议 →</button></div><div className={styles.insights}>{a.insights.map((i, index) => <article className={styles.panel} key={`${i.type}-${index}`}><span className={styles.tag} data-level={i.tagLevel}>{i.tag}</span><h3>{i.title}</h3><p>{i.description}</p></article>)}</div></section>
       <p className={styles.source}>净值截至 {a.asOfDate ?? '暂无持仓净值'} · 更新于 {localTimestamp(a.updatedAt)} · <button className={styles.textButton} onClick={state.reload}>刷新数据</button></p>
     </>}
     {Number.isSafeInteger(fundId) && fundId > 0 && <FundDetailDrawer key={fundId} id={fundId} range={navRange} onRange={setNavRange} onClose={close} {...shell} onPurchase={() => navigate(`/investor/funds?fundId=${fundId}&purchase=1`)} />}

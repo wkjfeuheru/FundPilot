@@ -4,6 +4,9 @@
 
 # Java
 web-ai-tougu/target/
+web-ai-tougu/target-ta/
+web-ai-tougu/target-ta-check/
+web-ai-tougu/.ta-*-pom.xml
 *.class
 
 # 前端
@@ -29,5 +32,5 @@ Thumbs.db
 .playwright-cli/
 frontend/output/
 
-# 验收构建产物
-.acceptance/**/*.jar
+# 本地验收环境、账号数据、进程号及构建产物
+/.acceptance/

@@ -7,14 +7,15 @@ import { mockSessionApi } from './authFixtures'
 afterEach(() => vi.unstubAllGlobals())
 describe('authenticated shell', () => {
   it('keeps the TA site anonymous without product login links or session requests', () => {
-    const fetchMock = vi.fn()
+    const fetchMock = vi.fn(async (_input: RequestInfo | URL) => new Response(JSON.stringify({ code: 'TA_DISABLED', detail: 'TA 演示功能未启用' }), { status: 404 }))
     vi.stubGlobal('fetch', fetchMock)
     window.history.replaceState({}, '', '/ta')
     render(<TaApp />)
     expect(screen.getByRole('heading', { name: 'TA 回执模拟台' })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: '登录' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: '注册开户' })).not.toBeInTheDocument()
-    expect(fetchMock).not.toHaveBeenCalled()
+    // The implemented anonymous TA page loads its own data, but must never restore a product session.
+    expect(fetchMock.mock.calls.every(([path]) => String(path).startsWith('/api/v1/ta/'))).toBe(true)
   })
   it('renders investor navigation and the real account display name', async () => {
     mockSessionApi('INVESTOR')

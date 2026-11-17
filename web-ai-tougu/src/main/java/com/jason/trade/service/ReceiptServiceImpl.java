@@ -31,7 +31,8 @@ public class ReceiptServiceImpl implements IReceiptService {
         var funds=navs(ids,order.getTradeDate());
         var plan=calculator.calculate(order,items,funds,mapper.holdings(userId,ids));
         var names=new HashMap<Long,String>();funds.forEach(f->names.put(f.getId(),f.getName()));
-        return new ReceiptPreview(views.detail(userId,orderId),calendar.nextOrSame(order.getTradeDate().plusDays(1)),order.getTradeDate(),
+        var confirmDate=calendar.nextOrSame(order.getTradeDate().plusDays(1));
+        return new ReceiptPreview(views.detail(userId,orderId),receiptNo(orderId,confirmDate),confirmDate,order.getTradeDate(),
             unit(order,funds).toPlainString(),plan.amount().toPlainString(),plan.fee().toPlainString(),
             plan.items().stream().map(i->new ReceiptPreview.Item(i.getFundId(),names.get(i.getFundId()),money(i.getConfirmedAmount()),shares(i.getConfirmedShares()),money(i.getFee()))).toList());
     }
@@ -60,7 +61,7 @@ public class ReceiptServiceImpl implements IReceiptService {
         if(mapper.complete(orderId,success?2:3)!=1)throw new BusinessException(ErrorCode.TA_TRADE_ORDER_NOT_PENDING);
         ReceiptRow receipt=new ReceiptRow();receipt.setOrderId(orderId);receipt.setResult(success?1:2);
         receipt.setConfirmDate(calendar.nextOrSame(order.getTradeDate().plusDays(1)));receipt.setNavDate(order.getTradeDate());
-        receipt.setReceiptNo("TA"+receipt.getConfirmDate().format(DateTimeFormatter.BASIC_ISO_DATE)+String.format(Locale.ROOT,"%03d",orderId));
+        receipt.setReceiptNo(receiptNo(orderId,receipt.getConfirmDate()));
         receipt.setUnitNav(unit(order,funds));receipt.setTotalConfirmedAmount(confirmed);receipt.setTotalFee(fee);receipt.setFailReason(reason);
         mapper.receipt(receipt);
         String event=success?"trade.confirmed":"trade.failed";
@@ -90,5 +91,6 @@ public class ReceiptServiceImpl implements IReceiptService {
         return reason;
     }
     private static String money(BigDecimal n){return n.setScale(2,RoundingMode.HALF_UP).toPlainString();}
+    private static String receiptNo(long orderId,LocalDate date){return "TA"+date.format(DateTimeFormatter.BASIC_ISO_DATE)+String.format(Locale.ROOT,"%03d",orderId);}
     private static String shares(BigDecimal n){return n.setScale(4,RoundingMode.HALF_UP).toPlainString();}
 }

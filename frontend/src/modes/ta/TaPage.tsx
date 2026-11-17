@@ -44,7 +44,7 @@ export default function TaPage() {
           {data.orders.status === 'ready' && <>
             {data.orders.data.content.length === 0 && <p className={styles.empty}>暂无待登记交易</p>}
             <div className={styles.queue}>{data.orders.data.content.map(order => <article key={order.id} className={styles.order}>
-              <div><strong>{order.targetLabel}</strong><p>{order.orderCode}</p><span className={styles.muted}>{order.customerName} · {order.tradeTypeLabel} · T 日 {order.tradeDate}</span></div>
+              <div><strong>{order.targetLabel}</strong><p>{order.orderCode}</p><span className={styles.muted}>{order.customerName} · {order.tradeTypeLabel} · T 日 {order.tradeDate}</span><p className={styles.muted}>提交于 {localTimestamp(order.createdAt)} · T+1 确认</p></div>
               <dl><dt>买入 / 卖出金额</dt><dd>¥ {order.totalAmountIn} / {order.totalAmountOut}</dd><dt>冻结资金</dt><dd>¥ {order.freezeAmount}</dd></dl>
               <div><span className={styles.badge}>待登记确认</span><button className="btn" aria-label={`提交回执 ${order.orderCode}`} disabled={submission.attempt !== null} onClick={() => setModal({ orderId: order.id })}>提交回执</button></div>
             </article>)}</div>
@@ -56,7 +56,7 @@ export default function TaPage() {
           {data.receipts.status === 'error' && <p role="alert">{data.receipts.message}<button className="btn" onClick={data.reload}>重试</button></p>}
           {data.receipts.status === 'ready' && <>
             {data.receipts.data.content.length === 0 && <p className={styles.empty}>暂无回执记录</p>}
-            {data.receipts.data.content.map(receipt => <article className={styles.receipt} key={receipt.id}><div><strong>{receipt.targetLabel}</strong><p>{receipt.receiptNo} · {receipt.orderCode}</p><span className={styles.muted}>{localTimestamp(receipt.receivedAt)}</span></div><div><b>{receipt.result === 'SUCCESS' ? '确认成功' : '确认失败'}</b><p>{receipt.result === 'SUCCESS' ? `确认金额 ¥ ${receipt.totalConfirmedAmount} · 费用 ¥ ${receipt.totalFee}` : receipt.failReasonLabel}</p><span className={styles.muted}>确认日 {receipt.confirmDate} · 净值日 {receipt.navDate}</span></div></article>)}
+            {data.receipts.data.content.map(receipt => <article className={styles.receipt} key={receipt.id}><div><strong>{receipt.targetLabel}</strong><p>{receipt.receiptNo} · {receipt.orderCode}</p><span className={styles.muted}>{localTimestamp(receipt.receivedAt)}</span></div><div><b>{receipt.result === 'SUCCESS' ? '确认成功' : '确认失败'}</b><p>{receipt.result === 'SUCCESS' ? `确认金额 ¥ ${receipt.totalConfirmedAmount} · 费用 ¥ ${receipt.totalFee}` : receipt.failReasonLabel}</p><p>确认净值 {receipt.unitNav === '0.0000' ? '按标的分别结算' : receipt.unitNav}</p><span className={styles.muted}>确认日 {receipt.confirmDate} · 净值日 {receipt.navDate}</span></div></article>)}
             {data.receipts.data.totalPages > 1 && <nav className={styles.pagination} aria-label="最近回执分页"><button className="btn" disabled={receiptPage <= 1} onClick={() => changePage('receipts', receiptPage - 1)}>上一页</button><span>{receiptPage} / {data.receipts.data.totalPages}</span><button className="btn" disabled={receiptPage >= data.receipts.data.totalPages} onClick={() => changePage('receipts', receiptPage + 1)}>下一页</button></nav>}
           </>}
         </section>

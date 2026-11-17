@@ -92,8 +92,8 @@ class AuthIT {
         mvc.perform(get(java.net.URI.create("/api/v1/customers/" + encodedId + "/trade-orders")).session(session)).andExpect(status().isForbidden());
         mvc.perform(get("/api/v1/customers/+" + investorId + "/trade-orders").session(session)).andExpect(status().isBadRequest());
         jdbc.update("INSERT INTO advisor_customer_relation(advisor_user_id,customer_user_id,assigned_at) VALUES(?,?,UTC_TIMESTAMP(3))", advisorId, investorId);
-        // The business endpoint is intentionally absent in this authentication batch; reaching MVC gives 404.
-        mvc.perform(get(path).session(session)).andExpect(status().isNotFound()).andExpect(jsonPath("$.code").value("COMMON_RESOURCE_NOT_FOUND"));
+        // The implemented history endpoint is accessible only after the active assignment is established.
+        mvc.perform(get(path).session(session)).andExpect(status().isOk()).andExpect(jsonPath("$.data.content").isEmpty());
         jdbc.update("UPDATE advisor_customer_relation SET status=2 WHERE advisor_user_id=?", advisorId);
         mvc.perform(get(path).session(session)).andExpect(status().isForbidden());
     }

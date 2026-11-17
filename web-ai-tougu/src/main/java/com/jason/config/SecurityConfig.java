@@ -54,6 +54,7 @@ public class SecurityConfig {
                 }))
             .authorizeHttpRequests(rules -> rules
                 .requestMatchers("/api/v1/ping","/api/v1/auth/csrf","/api/v1/auth/sessions","/api/v1/auth/registrations","/api/v1/auth/sessions/current").permitAll()
+                .requestMatchers(HttpMethod.GET,"/api/v1/trading-days/current").permitAll()
                 .requestMatchers("/api/v1/ta/**","/api/v1/agent/tools/**").permitAll()
                 .requestMatchers("/api/v1/customers/**","/api/v1/advisor-dashboards/**","/api/v1/strategies/**",
                     "/api/v1/model-portfolios/**","/api/v1/client-portfolios/**","/api/v1/risk-events/**",

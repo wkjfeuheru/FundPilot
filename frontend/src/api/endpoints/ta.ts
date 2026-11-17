@@ -7,7 +7,7 @@ export interface TaOrder extends TradeOrder { customerUserId: number; customerNa
 export interface ReceiptView extends TaReceipt { orderCode: string; tradeType: string; targetLabel: string }
 export interface Page<T> { content: T[]; page: number; size: number; totalElements: number; totalPages: number }
 export interface ReceiptPreview {
-  order: TradeDetail; confirmDate: string; navDate: string; unitNav: string; totalConfirmedAmount: string; totalFee: string
+  order: TradeDetail; receiptNo: string; confirmDate: string; navDate: string; unitNav: string; totalConfirmedAmount: string; totalFee: string
   items: { fundId: number; fundName: string; confirmedShares: string; confirmedAmount: string; fee: string }[]
 }
 export interface ReceiptCommand { result: 'SUCCESS' | 'FAILED'; failReason?: string }
@@ -37,7 +37,7 @@ function isReceiptView(v: unknown): v is ReceiptView {
 export async function listTaOrders(current: number) { return page(await http<unknown>(`/api/v1/ta/trade-orders?page=${current}&size=20`), isTaOrder) }
 export async function listTaReceipts(current: number) { return page(await http<unknown>(`/api/v1/ta/receipts?page=${current}&size=20`), isReceiptView) }
 function isPreview(v: unknown): v is ReceiptPreview {
-  return isRecord(v) && isDetail(v.order) && typeof v.confirmDate === 'string' && typeof v.navDate === 'string' &&
+  return isRecord(v) && isDetail(v.order) && typeof v.receiptNo === 'string' && typeof v.confirmDate === 'string' && typeof v.navDate === 'string' &&
     ['unitNav', 'totalConfirmedAmount', 'totalFee'].every(k => decimal(v[k])) && Array.isArray(v.items) && v.items.every(i =>
       isRecord(i) && integer(i.fundId) && typeof i.fundName === 'string' && ['confirmedShares', 'confirmedAmount', 'fee'].every(k => decimal(i[k])))
 }

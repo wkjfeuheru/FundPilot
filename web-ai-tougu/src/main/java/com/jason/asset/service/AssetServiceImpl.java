@@ -34,6 +34,13 @@ public class AssetServiceImpl implements IAssetService {
     }
     @Override @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
     public AssetOverview overview(long userId){return snapshot(userId).overview();}
+    @Override @Transactional(readOnly=true,isolation=Isolation.REPEATABLE_READ)
+    public Holdings holdings(long userId){
+        var snapshot=snapshot(userId);var overview=snapshot.overview();
+        var cost=snapshot.holdings().stream().map(h->new BigDecimal(h.costAmount())).reduce(BigDecimal.ZERO,BigDecimal::add);
+        return new Holdings(snapshot.holdings(),new Holdings.Summary(overview.holdingMarketValue(),money(cost),
+            overview.cumulativePnl(),overview.cumulativePnlRate(),snapshot.holdings().size()),overview.asOfDate());
+    }
     private record Snapshot(AssetOverview overview,List<Holding> holdings) {}
     private Snapshot snapshot(long userId){
         var cash=trades.cash(userId);if(cash==null)throw new BusinessException(ErrorCode.NOT_FOUND,"资金账户未初始化");

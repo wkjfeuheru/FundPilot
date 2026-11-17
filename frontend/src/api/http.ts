@@ -69,11 +69,9 @@ async function request(path: string, options: RequestInit = {}): Promise<Respons
   }
   return response
 }
-export async function downloadPdf(path: string): Promise<{ blob: Blob; filename: string }> {
+export async function httpBlob(path: string): Promise<{ blob: Blob; contentType: string; disposition: string }> {
   const response = await request(path)
-  if (!response.headers.get('Content-Type')?.startsWith('application/pdf')) throw new ApiError(502, 'INVALID_RESPONSE', '响应异常', '报告格式异常，请重试')
-  const name = response.headers.get('Content-Disposition')?.match(/filename="?(FundPilot-asset-report-\d{8}\.pdf)"?/)?.[1]
-  return { blob: await response.blob(), filename: name ?? 'FundPilot-asset-report.pdf' }
+  return { blob: await response.blob(), contentType: response.headers.get('Content-Type') ?? '', disposition: response.headers.get('Content-Disposition') ?? '' }
 }
 export async function http<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await request(path, options)

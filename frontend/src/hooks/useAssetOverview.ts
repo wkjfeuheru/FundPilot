@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { getAssetReport, getAssetTrend, getOverview } from '../api/endpoints/assets'
 import type { NavRange } from '../api/endpoints/funds'
 import { errorMessage, useRemote } from './useFunds'
+import useSettlementRefresh from './useSettlementRefresh'
 export default function useAssetOverview(range: NavRange) {
-  const [revision, setRevision] = useState(0)
+  const { revision, reload } = useSettlementRefresh()
   const loadTrend = useCallback(() => getAssetTrend(range), [range])
   const overview = useRemote(getOverview, revision), trend = useRemote(loadTrend, revision)
   const [downloading, setDownloading] = useState(false), [downloadError, setDownloadError] = useState('')
@@ -22,5 +23,5 @@ export default function useAssetOverview(range: NavRange) {
     } catch (error) { setDownloadError(errorMessage(error)) }
     finally { pending.current = false; setDownloading(false) }
   }
-  return { overview, trend, downloading, downloadError, download, reload: () => setRevision(r => r + 1) }
+  return { overview, trend, downloading, downloadError, download, reload }
 }

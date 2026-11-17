@@ -30,7 +30,11 @@ import java.util.stream.Collectors;
                 holding.setCostAmount(holding.getCostAmount().add(amount.subtract(fee)));
                 buy=buy.add(amount);
             }else if(item.getDirection()==2){
-                shares=item.getShares();
+                // ADVICE-03 stores rebalance legs as amounts with requested shares=0.
+                if(order.getTradeType()==3){
+                    if(item.getAmount().signum()<=0)throw invalid("调出金额必须大于零");
+                    shares=item.getAmount().divide(fund.getUnitNav(),4,RoundingMode.HALF_UP);
+                }else shares=item.getShares();
                 if(shares.signum()<=0 || shares.compareTo(holding.getShares())>0)throw invalid("可用持仓份额不足，无法确认");
                 amount=money(shares.multiply(fund.getUnitNav()));
                 if(order.getTradeType()==2)fee=money(amount.multiply(fund.getFeeRedeem()).movePointLeft(2));

@@ -30,6 +30,7 @@ export default function ReceiptDrawer({ orderId, count, backgroundRef, submissio
       {preview.status === 'ready' && preview.data && <>
         <h3>{preview.data.order.targetLabel}</h3><p className={styles.muted}>{preview.data.order.orderCode}</p>
         <dl className={styles.details}>
+          <dt>TA 确认编号</dt><dd>{preview.data.receiptNo}</dd>
           <dt>净值日期（T 日）</dt><dd>{preview.data.navDate}</dd><dt>确认日期（T+1）</dt><dd>{preview.data.confirmDate}</dd>
           <dt>确认净值</dt><dd>{preview.data.unitNav === '0.0000' ? '按各标的 T 日净值结算' : preview.data.unitNav}</dd>
           <dt>成功确认金额</dt><dd>¥ {preview.data.totalConfirmedAmount}</dd><dt>手续费</dt><dd>¥ {preview.data.totalFee}</dd>

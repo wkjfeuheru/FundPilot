@@ -7,6 +7,7 @@
     FROM event_outbox e LEFT JOIN trade_order t ON t.id=e.aggregate_id AND t.deleted_at='1970-01-01 00:00:00'
     LEFT JOIN rebalance_advice a ON a.id=t.advice_id AND a.deleted_at='1970-01-01 00:00:00'
     WHERE e.aggregate_type='trade_order' AND e.event_type IN ('trade.confirmed','trade.failed')
+      AND e.deleted_at='1970-01-01 00:00:00'
       AND e.dispatch_status IN (1,3) AND e.next_retry_at&lt;=UTC_TIMESTAMP(3)
     ORDER BY e.id LIMIT 50 FOR UPDATE
   </select>
@@ -15,7 +16,7 @@
     <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
   </update>
   <update id="retry">
-    UPDATE event_outbox SET dispatch_status=3,retry_count=retry_count+1,
+    UPDATE event_outbox SET dispatch_status=3,retry_count=LEAST(retry_count+1,127),
       next_retry_at=DATE_ADD(UTC_TIMESTAMP(3),INTERVAL 30 SECOND) WHERE id IN
     <foreach collection="ids" item="id" open="(" close=")" separator=",">#{id}</foreach>
   </update>

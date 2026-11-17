@@ -1,4 +1,4 @@
-import { ApiError, downloadPdf, http, isRecord } from '../http'
+import { ApiError, httpBlob, http, isRecord } from '../http'
 import { FUND_TYPES, type FundType, type NavRange } from './funds'
 export interface Allocation { assetClass: FundType; assetClassLabel: string; weight: string; marketValue: string }
 export interface Holding {
@@ -26,4 +26,22 @@ function trend(v: unknown): v is AssetTrend { return isRecord(v) && typeof v.ran
 function invalid(): never { throw new ApiError(502, 'INVALID_RESPONSE', '响应异常', '资产数据格式异常，请重试') }
 export async function getOverview() { const data = await http<unknown>('/api/v1/asset-overviews/current'); return overview(data) ? data : invalid() }
 export async function getAssetTrend(range: NavRange) { const data = await http<unknown>(`/api/v1/asset-trends/current?range=${range}`); return trend(data) ? data : invalid() }
-export function getAssetReport() { return downloadPdf('/api/v1/asset-overviews/current/report') }
+export async function getAssetReport() {
+  const result = await httpBlob('/api/v1/asset-overviews/current/report')
+  if (!result.contentType.startsWith('application/pdf')) throw new ApiError(502, 'INVALID_RESPONSE', '响应异常', '报告格式异常，请重试')
+  const filename = result.disposition.match(/filename="?(FundPilot-asset-report-\d{8}\.pdf)"?/)?.[1] ?? 'FundPilot-asset-report.pdf'
+  return { blob: result.blob, filename }
+}
+export interface Holdings {
+  items: Holding[]
+  summary: { marketValue: string; costAmount: string; pnl: string; pnlRate: string; holdingCount: number }
+  asOfDate: string | null
+}
+function isHoldings(v: unknown): v is Holdings {
+  return isRecord(v) && Array.isArray(v.items) && v.items.every(holding) && (v.asOfDate === null || typeof v.asOfDate === 'string') &&
+    isRecord(v.summary) && decimals(v.summary, ['marketValue', 'costAmount', 'pnl', 'pnlRate']) && Number.isSafeInteger(v.summary.holdingCount)
+}
+export async function getHoldings(): Promise<Holdings> {
+  const data = await http<unknown>('/api/v1/holdings')
+  return isHoldings(data) ? data : invalid()
+}

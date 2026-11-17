@@ -56,6 +56,8 @@ class TaReceiptIT {
     private String key(){return UUID.randomUUID().toString();}
     @Test void confirmsPurchaseAtTradeDateNavAndReplaysWithoutDoubleSettlement() throws Exception {
         purchase(301,101);String key=key();
+        mvc.perform(get("/api/v1/ta/trade-orders/301/receipt-preview")).andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.receiptNo").value("TA20261116301"));
         String body=receipt(301,key,"SUCCESS",null).andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("CONFIRMED"))
             .andExpect(jsonPath("$.data.taReceipt.confirmDate").value("2026-11-16"))
             .andExpect(jsonPath("$.data.taReceipt.unitNav").value("2.5000"))
@@ -124,21 +126,26 @@ class TaReceiptIT {
         assertThat(jdbc.queryForObject("SELECT shares FROM holding WHERE fund_id=201",java.math.BigDecimal.class)).isEqualByComparingTo("10");
         assertThat(jdbc.queryForObject("SELECT cost_amount FROM holding WHERE fund_id=201",java.math.BigDecimal.class)).isEqualByComparingTo("20");
         jdbc.update("INSERT INTO trade_order(id,order_code,user_id,trade_type,trade_date,total_amount_in,total_amount_out,total_fee,freeze_amount) VALUES(308,'T-REBAL',101,3,'2026-11-13',25,25,0.06,0.06)");
-        jdbc.update("INSERT INTO trade_order_item(order_id,fund_id,direction,amount,shares,fee) VALUES(308,201,2,0,10,0.03),(308,202,1,25,0,0.03)");
+        jdbc.update("INSERT INTO trade_order_item(order_id,fund_id,direction,amount,shares,fee) VALUES(308,201,2,25,0,0.03),(308,202,1,25,0,0.03)");
         receipt(308,key(),"SUCCESS",null).andExpect(status().isOk()).andExpect(jsonPath("$.data.taReceipt.unitNav").value("0.0000"));
         assertThat(jdbc.queryForObject("SELECT cost_amount FROM holding WHERE fund_id=201",java.math.BigDecimal.class)).isEqualByComparingTo("0");
         assertThat(jdbc.queryForObject("SELECT cost_amount FROM holding WHERE fund_id=202",java.math.BigDecimal.class)).isEqualByComparingTo("24.97");
         assertThat(jdbc.queryForObject("SELECT cash_balance FROM cash_account WHERE user_id=101",java.math.BigDecimal.class)).isEqualByComparingTo("50024.81");
     }
-    @Test void adviceReceivesDurableTerminalEvent() throws Exception {
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvSource({"FAILED,6","SUCCESS,3"})
+    void adviceReceivesDurableTerminalEvent(String result,int expectedStatus) throws Exception {
         purchase(309,101);
         jdbc.update("INSERT INTO rebalance_advice(id,advice_code,customer_user_id,advisor_user_id,status,pushed_at,valid_until) VALUES(401,'RA-TEST',101,999,2,UTC_TIMESTAMP(),'2026-12-01')");
         jdbc.update("UPDATE trade_order SET advice_id=401 WHERE id=309");
-        receipt(309,key(),"FAILED","TRADING_STATUS_ABNORMAL").andExpect(status().isOk());
+        receipt(309,key(),result,"FAILED".equals(result)?"TRADING_STATUS_ABNORMAL":null).andExpect(status().isOk());
         long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(12);
-        while(System.nanoTime()<deadline && jdbc.queryForObject("SELECT status FROM rebalance_advice WHERE id=401",Integer.class)!=6)Thread.sleep(100);
-        assertThat(jdbc.queryForObject("SELECT status FROM rebalance_advice WHERE id=401",Integer.class)).isEqualTo(6);
+        while(System.nanoTime()<deadline && jdbc.queryForObject("SELECT status FROM rebalance_advice WHERE id=401",Integer.class)!=expectedStatus)Thread.sleep(100);
+        assertThat(jdbc.queryForObject("SELECT status FROM rebalance_advice WHERE id=401",Integer.class)).isEqualTo(expectedStatus);
         assertThat(jdbc.queryForObject("SELECT dispatch_status FROM event_outbox WHERE aggregate_id=309",Integer.class)).isEqualTo(2);
+        jdbc.update("INSERT INTO event_outbox(event_type,aggregate_type,aggregate_id,payload,next_retry_at) SELECT event_type,aggregate_type,aggregate_id,payload,UTC_TIMESTAMP(3) FROM event_outbox WHERE aggregate_id=309");
+        dispatcher.dispatch();
+        assertThat(jdbc.queryForObject("SELECT version FROM rebalance_advice WHERE id=401",Integer.class)).isEqualTo(1);
     }
     private MockHttpSession session(long id,com.jason.auth.dto.Role role){
         var principal=new com.jason.auth.security.SessionPrincipal(id,"test",role);
@@ -155,7 +162,7 @@ class TaReceiptIT {
         mvc.perform(get("/api/v1/holdings").session(session(102,com.jason.auth.dto.Role.INVESTOR))).andExpect(jsonPath("$.data.items").isEmpty());
         jdbc.update("INSERT IGNORE INTO user(id,username,password_hash,display_name,role) VALUES(103,'ta-advisor','unused','顾问',2)");
         jdbc.update("INSERT IGNORE INTO customer(user_id) VALUES(101)");
-        jdbc.update("INSERT INTO advisor_customer_relation(advisor_user_id,customer_user_id) VALUES(103,101)");
+        jdbc.update("INSERT INTO advisor_customer_relation(advisor_user_id,customer_user_id,assigned_at) VALUES(103,101,UTC_TIMESTAMP(3))");
         mvc.perform(get("/api/v1/customers/101/trade-orders").session(session(103,com.jason.auth.dto.Role.ADVISOR)))
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.content[0].status").value("CONFIRMED"));
         mvc.perform(get("/api/v1/customers/102/trade-orders").session(session(103,com.jason.auth.dto.Role.ADVISOR))).andExpect(status().isForbidden());
@@ -174,5 +181,37 @@ class TaReceiptIT {
         receipt(312,key(),"SUCCESS",null).andExpect(status().isConflict());
         assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM ta_receipt",Integer.class)).isZero();
         assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM holding",Integer.class)).isZero();
+    }
+    @Autowired com.jason.platform.service.WriteReplay replay;
+    @Autowired com.jason.platform.service.TerminalEventDispatcher dispatcher;
+    @Autowired org.springframework.transaction.PlatformTransactionManager transactionManager;
+    @Test void requestDigestIsIndependentOfMapIterationOrder(){
+        String key=key();var first=new LinkedHashMap<String,Object>();first.put("z",1);first.put("a",2);
+        var second=new LinkedHashMap<String,Object>();second.put("a",2);second.put("z",1);
+        var transaction=new org.springframework.transaction.support.TransactionTemplate(transactionManager);
+        transaction.executeWithoutResult(tx->{var claim=replay.claim(key,0,"POST /acceptance/canonical",first);replay.complete(claim.id(),"accepted",Duration.ofMinutes(5));});
+        transaction.executeWithoutResult(tx->assertThat(replay.claim(key,0,"POST /acceptance/canonical",second).replayed()).isTrue());
+    }
+    @Test void exhaustedInvalidEventDoesNotOverflowAndBlockValidEvents() throws Exception {
+        jdbc.update("INSERT INTO event_outbox(event_type,aggregate_type,aggregate_id,payload,retry_count,next_retry_at) VALUES('trade.confirmed','trade_order',999999,'{}',127,DATE_ADD(UTC_TIMESTAMP(3),INTERVAL 1 DAY))");
+        purchase(314,101);receipt(314,key(),"SUCCESS",null).andExpect(status().isOk());
+        jdbc.update("UPDATE event_outbox SET next_retry_at=UTC_TIMESTAMP(3)");
+        dispatcher.dispatch();
+        assertThat(jdbc.queryForObject("SELECT retry_count FROM event_outbox WHERE aggregate_id=999999",Integer.class)).isEqualTo(127);
+        assertThat(jdbc.queryForObject("SELECT dispatch_status FROM event_outbox WHERE aggregate_id=314",Integer.class)).isEqualTo(2);
+    }
+    @Autowired com.jason.trade.service.ITradeService purchaseService;
+    @Test void concurrentPurchaseAndReceiptShareTheCashReservationLock() throws Exception {
+        purchase(315,101);jdbc.update("UPDATE cash_account SET cash_balance=2000 WHERE user_id=101");
+        try(var executor=Executors.newVirtualThreadPerTaskExecutor()){
+            var gate=new CountDownLatch(1);
+            var confirmation=executor.submit(()->{gate.await();return receipt(315,key(),"SUCCESS",null).andReturn().getResponse().getStatus();});
+            var submission=executor.submit(()->{gate.await();return purchaseService.purchase(101,key(),new com.jason.trade.dto.PurchaseRequest(201L,"1000.00",true),"ta-concurrent-purchase");});
+            gate.countDown();assertThat(confirmation.get(20,TimeUnit.SECONDS)).isEqualTo(200);
+            assertThat(submission.get(20,TimeUnit.SECONDS).response().data().getStatus()).isEqualTo("PENDING_TA");
+        }
+        mvc.perform(get("/api/v1/ta/summary")).andExpect(jsonPath("$.data.cashBalance").value("1000.00"))
+            .andExpect(jsonPath("$.data.frozenAmount").value("1000.00")).andExpect(jsonPath("$.data.availableCash").value("0.00"));
+        assertThat(jdbc.queryForObject("SELECT shares FROM holding WHERE user_id=101",java.math.BigDecimal.class)).isEqualByComparingTo("399.5200");
     }
 }

@@ -33,10 +33,4 @@
     INSERT INTO event_outbox(event_type,aggregate_type,aggregate_id,payload,next_retry_at)
     VALUES(#{type},'trade_order',#{orderId},CAST(#{payload} AS JSON),UTC_TIMESTAMP(3))
   </insert>
-  <select id="currentHoldings" resultType="com.jason.trade.model.HoldingRow">
-    SELECT h.*,f.fund_code,f.name AS fund_name,f.fund_type,f.risk_level,f.latest_nav,f.latest_nav_date AS nav_date,
-      f.purchase_status,f.redeem_status FROM holding h JOIN fund f ON f.id=h.fund_id
-    WHERE h.user_id=#{userId} AND h.shares>0 AND h.deleted_at='1970-01-01 00:00:00.000'
-    ORDER BY h.shares*f.latest_nav DESC,h.id
-  </select>
 </mapper>

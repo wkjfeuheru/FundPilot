@@ -18,5 +18,4 @@ import java.time.LocalDate;
     void receipt(ReceiptRow row);
     void audit(@Param("orderId") long orderId,@Param("code") String code,@Param("detail") String detail,@Param("traceId") String traceId);
     void event(@Param("orderId") long orderId,@Param("type") String type,@Param("payload") String payload);
-    List<HoldingRow> currentHoldings(long userId);
 }

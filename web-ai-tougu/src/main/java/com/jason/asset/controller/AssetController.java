@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 public class AssetController {
     private final IAssetService service;
     private final Clock clock;
+    @GetMapping("/holdings")
+    public ResponseEntity<ResponseDTO<Holdings>> holdings(@AuthenticationPrincipal SessionPrincipal user){return ResponseEntity.ok(ResponseDTO.success(service.holdings(user.userId())));}
     @GetMapping("/asset-overviews/current")
     public ResponseEntity<ResponseDTO<AssetOverview>> overview(@AuthenticationPrincipal SessionPrincipal user){return ResponseEntity.ok(ResponseDTO.success(service.overview(user.userId())));}
     @GetMapping("/asset-trends/current")

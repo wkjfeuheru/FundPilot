@@ -23,7 +23,7 @@ public class WriteReplay {
     public Claim claim(String key,long userId,String path,Object request){
         if(key==null)throw new BusinessException(ErrorCode.COMMON_MISSING_IDEMPOTENCY_KEY);
         if(!key.matches("[A-Za-z0-9_-]{16,64}"))throw new BusinessException(ErrorCode.COMMON_INVALID_IDEMPOTENCY_KEY);
-        String digest=hash(json.writeValueAsString(request));boolean fresh=true;
+        String digest=hash(json.writer().with(tools.jackson.databind.SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS).writeValueAsString(request));boolean fresh=true;
         try{mapper.claim(key,userId,path,digest);}catch(DuplicateKeyException ex){fresh=false;}
         var row=mapper.key(key);
         if(fresh)return new Claim(row.getId(),null);

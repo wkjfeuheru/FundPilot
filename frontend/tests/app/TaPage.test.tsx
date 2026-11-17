@@ -16,7 +16,7 @@ beforeEach(() => {
     const path = String(input)
     if (disabled) return new Response(JSON.stringify({ code: 'TA_DISABLED', detail: 'TA 演示功能未启用' }), { status: 404 })
     if (path.endsWith('/summary')) return ok({ pendingCount: confirmed ? 0 : 1, cashBalance: confirmed ? '49000.00' : '50000.00', frozenAmount: confirmed ? '0.00' : '1000.00', availableCash: '49000.00', accountCount: 1, generatedAt: receipt.receivedAt })
-    if (path.includes('receipt-preview')) return ok({ order, confirmDate: receipt.confirmDate, navDate: receipt.navDate, unitNav: '2.5000', totalConfirmedAmount: '1000.00', totalFee: '1.20', items: [{ fundId: 201, fundName: '测试基金', confirmedShares: '399.5200', confirmedAmount: '1000.00', fee: '1.20' }] })
+    if (path.includes('receipt-preview')) return ok({ order, receiptNo: receipt.receiptNo, confirmDate: receipt.confirmDate, navDate: receipt.navDate, unitNav: '2.5000', totalConfirmedAmount: '1000.00', totalFee: '1.20', items: [{ fundId: 201, fundName: '测试基金', confirmedShares: '399.5200', confirmedAmount: '1000.00', fee: '1.20' }] })
     if (init?.method === 'POST') {
       calls.push({ path, key: new Headers(init.headers).get('Idempotency-Key'), body: String(init.body) })
       if (uncertain) throw new TypeError('lost response')

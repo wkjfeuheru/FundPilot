@@ -38,6 +38,8 @@
 
 ## 后续演示
 
+> 2026-11-17 更新：下方待 TA 状态和运行 JAR 为本阶段历史记录。原订单已成功确认，现金 ¥49,000、冻结 ¥0、持仓 408.6743 份；TA 模块与最新演示步骤见 [TA 回执实施记录](ta-receipts.md)。
+
 账号见 [认证实施记录](authentication.md#三端演示入口与账号)：`acceptance_investor_1116` / `Acceptance1116!`。
 
 默认入口已验证：[基金超市](http://127.0.0.1:5173/investor/funds)、[交易记录](http://127.0.0.1:5173/investor/transactions)。8080 后端已更新并继续连接原验收库；5173/5174/5175 前端进程保持运行。后端重启后需重新登录。当前运行的是 `.acceptance/purchase/demo-app.jar` 构建副本，避免 Windows 锁定 Maven 的目标 JAR；后续 Java 代码修改需按认证记录重新构建并重启服务。
